@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Association.cs" />
     <Compile Include="Don.cs" />
     <Compile Include="IIdentifiable.cs" />
     <Compile Include="Objet.cs" />
