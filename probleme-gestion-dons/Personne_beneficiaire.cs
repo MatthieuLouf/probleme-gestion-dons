@@ -14,5 +14,10 @@ namespace probleme_gestion_dons
         {
             this.date_naissance = date_naissance;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + " Naissance : " + this.date_naissance.ToShortDateString();
+        }
     }
 }

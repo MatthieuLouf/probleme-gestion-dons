@@ -16,5 +16,10 @@ namespace probleme_gestion_dons
             this.coordonnees = coordonnees;
             this.type_activite = type_activite;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + "Coordonnees : " + this.coordonnees + "Type d'activite : " + this.type_activite;
+        }
     }
 }

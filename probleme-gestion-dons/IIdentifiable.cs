@@ -8,6 +8,6 @@ namespace probleme_gestion_dons
 {
     interface IIdentifiable
     {
-        int Identifiant { get; set; }
+        int Id { get; set; }
     }
 }

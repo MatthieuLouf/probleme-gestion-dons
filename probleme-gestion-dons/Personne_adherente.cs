@@ -14,5 +14,10 @@ namespace probleme_gestion_dons
         {
             this.fonction = fonction;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + " Fonction : " + this.fonction;
+        }
     }
 }

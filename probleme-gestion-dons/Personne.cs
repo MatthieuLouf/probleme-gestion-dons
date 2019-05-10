@@ -8,15 +8,20 @@ namespace probleme_gestion_dons
 {
     public abstract class Personne
     {
-        string nom;
-        int identifiant;
-        string telephone;
+        protected string nom;
+        protected int identifiant;
+        protected string telephone;
 
         protected Personne(string nom, int identifiant, string telephone)
         {
             this.nom = nom;
             this.identifiant = identifiant;
             this.telephone = telephone;
+        }
+
+        public override string ToString()
+        {
+            return "Personne n°" + this.identifiant + " Nom :" + this.nom + " Tel : " + this.telephone ;
         }
     }
 }
