@@ -12,7 +12,7 @@ namespace probleme_gestion_dons
         double largeur;
         double longueur;
 
-        public Objet_volumineux(double hauteur, double largeur, double longueur, int reference_objet, string type, string description_objet) : base(reference_objet, type, description_objet)
+        public Objet_volumineux(double hauteur, double largeur, double longueur, int reference_objet, string type, string description_objet, int montant) : base(reference_objet, type, description_objet,montant)
         {
             this.hauteur = hauteur;
             this.largeur = largeur;
