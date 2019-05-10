@@ -12,6 +12,22 @@ namespace probleme_gestion_dons
         protected int identifiant;
         protected string telephone;
 
+        public string Telephone
+        {
+            get
+            {
+                return this.telephone;
+            }
+        }
+
+        public string Nom
+        {
+            get
+            {
+                return this.nom;
+            }
+        }
+
         protected Personne(string nom, int identifiant, string telephone)
         {
             this.nom = nom;

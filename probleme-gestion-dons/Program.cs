@@ -113,6 +113,8 @@ namespace probleme_gestion_dons
 
             Association assos = new Association(liste_adherent, liste_beneficiaire);
 
+            Console.WriteLine(assos.findByNom("Lemarechal").ToString());
+
             Don cadeau = entrerDon();
             Console.WriteLine("\n\n" + cadeau);
 
