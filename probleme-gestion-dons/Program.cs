@@ -107,9 +107,11 @@ namespace probleme_gestion_dons
 
         static void Main(string[] args)
         {
-
+            
             List<Personne_adherente> liste_adherent = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
             List<Personne_beneficiaire> liste_beneficiaire = lecture_personnes_beneficiaire("..\\..\\data\\Beneficiaires.txt");
+
+            Association assos = new Association(liste_adherent, liste_beneficiaire);
 
             Don cadeau = entrerDon();
             Console.WriteLine("\n\n" + cadeau);
