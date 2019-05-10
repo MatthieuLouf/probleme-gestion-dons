@@ -39,7 +39,30 @@ namespace probleme_gestion_dons
             string type = demanderString("Entrez le type de l'objet");
             string description_objet = demanderString("Entrez la description de l'objet");
             int montant = demanderInt("Entrez le montant de l'objet");
-            Objet result = new Objet(1, type, description_objet, montant);
+            Objet result = new Objet(type, description_objet, montant);
+            return result;
+        }
+
+        static Don entrerDon()
+        {
+            Console.WriteLine("Saisie des informations du Don : \n");
+
+            string status = "attente";
+            DateTime date_reception_don = DateTime.Today;
+
+            string adresse = demanderString("Entrez l'adresse du donnateur");
+            string description_don = demanderString("Entrez la description du don");
+            int nb_objets = demanderInt("\nEntrez le nombre d'objets dans le don");
+
+            List<Objet> liste_objets = new List<Objet>();
+            for (int i=0;i<nb_objets;i++)
+            {
+                Console.WriteLine("\n-> Saisie de l'objet n°" + (i+1));
+                Objet o = entrerObjet();
+                liste_objets.Add(o);
+            }
+
+            Don result = new Don(date_reception_don, adresse, description_don, status, liste_objets);
             return result;
         }
 
@@ -64,11 +87,11 @@ namespace probleme_gestion_dons
         }
 
         static void Main(string[] args)
-        {
-            Objet o = entrerObjet();
-            Console.WriteLine(o.ToString());
-
+        { 
             List<Personne_adherente> liste = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
+
+            Don cadeau = entrerDon();
+            Console.WriteLine("\n\n" + cadeau);
 
             Console.ReadKey();
         }

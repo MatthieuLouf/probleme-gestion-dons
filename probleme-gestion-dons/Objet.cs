@@ -8,21 +8,17 @@ namespace probleme_gestion_dons
 {
     class Objet
     {
+        static int compteur = 0;
         int reference_objet;
         string type;
         string description_objet;
         double montant;
 
-        public Objet(int reference_objet, string type, string description_objet)
+        public Objet(string type, string description_objet, double montant)
         {
-            this.reference_objet = reference_objet;
-            this.type = type;
-            this.description_objet = description_objet;
-        }
+            this.reference_objet=compteur;
+            compteur++;
 
-        public Objet(int reference_objet, string type, string description_objet, double montant)
-        {
-            this.reference_objet = reference_objet;
             this.type = type;
             this.description_objet = description_objet;
             this.montant = montant;
@@ -30,7 +26,7 @@ namespace probleme_gestion_dons
 
         public override string ToString()
         {
-            return "Objet : " + this.reference_objet + " " + this.type + " " + this.description_objet + " " + this.montant;
+            return "Objet n°" + this.reference_objet + " : " + this.type + " (" + this.description_objet +") pour le prix de "+ this.montant;
         }
     }
 }

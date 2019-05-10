@@ -12,11 +12,16 @@ namespace probleme_gestion_dons
         double largeur;
         double longueur;
 
-        public Objet_volumineux(double hauteur, double largeur, double longueur, int reference_objet, string type, string description_objet, int montant) : base(reference_objet, type, description_objet,montant)
+        public Objet_volumineux(string type, string description_objet, int montant,double hauteur, double largeur, double longueur) : base(type, description_objet, montant)
         {
             this.hauteur = hauteur;
             this.largeur = largeur;
             this.longueur = longueur;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + "hauteur : " + this.hauteur + " largeur : " + this.largeur + " longueur : " + this.longueur;
         }
     }
 }
