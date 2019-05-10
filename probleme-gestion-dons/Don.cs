@@ -13,6 +13,8 @@ namespace probleme_gestion_dons
         string adresse;
         string description_don;
         string status;
+        List<Objet> liste_objets;
+
 
     }
 }
