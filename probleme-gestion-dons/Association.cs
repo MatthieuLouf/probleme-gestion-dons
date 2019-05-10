@@ -10,11 +10,15 @@ namespace probleme_gestion_dons
     {
         List<Personne_adherente> liste_adherent;
         List<Personne_beneficiaire> liste_beneficiaire;
+        List<Don> dons_attente;
+        List<Don> dons_valide;
 
         public Association(List<Personne_adherente> liste_adherent, List<Personne_beneficiaire> liste_beneficiaire)
         {
             this.liste_adherent = liste_adherent;
             this.liste_beneficiaire = liste_beneficiaire;
+            this.dons_attente = new List<Don>();
+            this.dons_valide = new List<Don>();
         }
 
         public Personne_beneficiaire findByPhone_Beneficiaire(string numero)
@@ -51,7 +55,10 @@ namespace probleme_gestion_dons
                 
                 return avg;
             }
-
+        }
+        public void AjouterDonAttente(Don d)
+        {
+            this.dons_attente.Add(d);
         }
     }
 }
