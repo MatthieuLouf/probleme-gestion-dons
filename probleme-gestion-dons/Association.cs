@@ -17,14 +17,24 @@ namespace probleme_gestion_dons
             this.liste_beneficiaire = liste_beneficiaire;
         }
 
-        public Personne_beneficiaire findByPhone(string numero)
+        public Personne_beneficiaire findByPhone_Beneficiaire(string numero)
         {
             return this.liste_beneficiaire.Find(x => x.Telephone == numero);
         }
 
-        public Personne_beneficiaire findByNom(string nom)
+        public Personne_beneficiaire findByNom_Beneficiaire(string nom)
         {
             return this.liste_beneficiaire.Find(x => x.Nom == nom);
+        }
+
+        public Personne_adherente findByPhone_Adherent(string numero)
+        {
+            return this.liste_adherent.Find(x => x.Telephone == numero);
+        }
+
+        public Personne_adherente findByNom_Adherent(string nom)
+        {
+            return this.liste_adherent.Find(x => x.Nom == nom);
         }
     }
 }

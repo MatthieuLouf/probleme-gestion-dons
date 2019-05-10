@@ -15,6 +15,7 @@ namespace probleme_gestion_dons
             {
                 Console.Write(demande +" : ");
             }
+
             return Console.ReadLine();
         }
         static int demanderInt(string demande="")
@@ -44,16 +45,24 @@ namespace probleme_gestion_dons
             return result;
         }
 
-        static Don entrerDon()
+        static Don entrerDon(Association assos)
         {
             Console.WriteLine("Saisie des informations du Don : \n");
 
             string status = "attente";
             DateTime date_reception_don = DateTime.Today;
 
-            string adresse = demanderString("Entrez l'adresse du donnateur");
+            string nom_donateur;
+            Personne_adherente p = null;
+            do
+            {
+                nom_donateur = demanderString("Entrer le nom de la personne adhérente (donateur)");
+                p = assos.findByNom_Adherent(nom_donateur);
+            } while (p == null);
+
             string description_don = demanderString("Entrez la description du don");
             int nb_objets = demanderInt("\nEntrez le nombre d'objets dans le don");
+
 
             List<Objet> liste_objets = new List<Objet>();
             for (int i=0;i<nb_objets;i++)
@@ -63,7 +72,7 @@ namespace probleme_gestion_dons
                 liste_objets.Add(o);
             }
 
-            Don result = new Don(date_reception_don, adresse, description_don, status, liste_objets);
+            Don result = new Don(date_reception_don, description_don, status, liste_objets, p);
             return result;
         }
 
@@ -114,9 +123,9 @@ namespace probleme_gestion_dons
 
             Association assos = new Association(liste_adherent, liste_beneficiaire);
 
-            Console.WriteLine(assos.findByNom("Lemarechal").ToString());
+            Console.WriteLine(assos.findByNom_Beneficiaire("Lemarechal").ToString());
 
-            Don cadeau = entrerDon();
+            Don cadeau = entrerDon(assos);
             Console.WriteLine("\n\n" + cadeau);
 
             Console.ReadKey();
