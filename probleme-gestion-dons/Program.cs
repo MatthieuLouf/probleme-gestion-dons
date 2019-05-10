@@ -26,6 +26,7 @@ namespace probleme_gestion_dons
                 try
                 {
                     result = Convert.ToInt32(demanderString(demande));
+                    err = false;
                 }
                 catch
                 {
