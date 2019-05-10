@@ -36,5 +36,22 @@ namespace probleme_gestion_dons
         {
             return this.liste_adherent.Find(x => x.Nom == nom);
         }
+
+        public TimeSpan AvgAge_Beneficiaires
+        {
+            get
+            {
+                List<TimeSpan> liste = new List<TimeSpan>();
+                foreach (Personne_beneficiaire a in liste_beneficiaire)
+                {
+                    liste.Add(DateTime.Now - a.DateNaissance);
+                }
+
+                TimeSpan avg = TimeSpan.FromMilliseconds(liste.Average(ts => ts.TotalMilliseconds));
+                
+                return avg;
+            }
+
+        }
     }
 }
