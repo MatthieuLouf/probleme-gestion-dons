@@ -43,6 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Don.cs" />
+    <Compile Include="IIdentifiable.cs" />
+    <Compile Include="Objet.cs" />
+    <Compile Include="Objet_volumineux.cs" />
+    <Compile Include="Personne.cs" />
+    <Compile Include="Personne_adherente.cs" />
+    <Compile Include="Personne_beneficiaire.cs" />
+    <Compile Include="Personne_morale.cs" />
+    <Compile Include="Personne_physique.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

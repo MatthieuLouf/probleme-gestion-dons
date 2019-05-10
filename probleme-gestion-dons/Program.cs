@@ -8,8 +8,15 @@ namespace probleme_gestion_dons
 {
     class Program
     {
+        static Don creerDon()
+        {
+            Don result = new Don()
+        }
+
         static void Main(string[] args)
         {
+
+
         }
     }
 }
