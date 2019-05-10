@@ -18,10 +18,16 @@ namespace probleme_gestion_dons
 
             return Console.ReadLine();
         }
-        static int demanderInt(string demande="")
+        static int demanderInt(string demande="",int min = -1, int max = -1)
         {
             bool err = false;
-            int result=0;
+            bool minmax = true;
+            if(min==-1 && max==-1)
+            {
+                minmax = false;
+            }
+            int result=-2;
+
             do
             {
                 try
@@ -33,7 +39,7 @@ namespace probleme_gestion_dons
                 {
                     err = true;
                 }
-            } while (err == true);
+            } while (err == true || (minmax==true && (result < min || result > max)));
             return result;
         }
         static Objet entrerObjet()
@@ -117,7 +123,6 @@ namespace probleme_gestion_dons
 
         static void Main(string[] args)
         {
-            
             List<Personne_adherente> liste_adherent = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
             List<Personne_beneficiaire> liste_beneficiaire = lecture_personnes_beneficiaire("..\\..\\data\\Beneficiaires.txt");
 
@@ -125,8 +130,9 @@ namespace probleme_gestion_dons
 
             Console.WriteLine(assos.findByNom_Beneficiaire("Lemarechal").ToString());
 
-            Don cadeau = entrerDon(assos);
-            Console.WriteLine("\n\n" + cadeau);
+
+            Don d = entrerDon(assos);
+            assos.AjouterDonAttente(d);
 
             Console.ReadKey();
         }
