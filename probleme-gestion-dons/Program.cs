@@ -133,6 +133,7 @@ namespace probleme_gestion_dons
 
             Don d = entrerDon(assos);
             assos.AjouterDonAttente(d);
+            assos.ValiderDon(d, demanderInt("1-Valider ce don 2-Refuser le don", 1, 2));
 
             Console.ReadKey();
         }

@@ -20,6 +20,10 @@ namespace probleme_gestion_dons
             this.description_don = description_don;
             this.status = status;
             this.liste_objets = liste_objets;
+            for(int i=0;i<liste_objets.Count;i++)
+            {
+                liste_objets[i].Don_groupe = this;
+            }
             this.donateur = donateur;
         }
 

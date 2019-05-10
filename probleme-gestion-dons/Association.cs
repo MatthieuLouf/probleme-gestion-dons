@@ -44,5 +44,13 @@ namespace probleme_gestion_dons
         {
             this.dons_attente.Add(d);
         }
+
+        public void ValiderDon(Don d,int choix)
+        {
+            if(choix==1)
+            {
+                
+            }
+        }
     }
 }
