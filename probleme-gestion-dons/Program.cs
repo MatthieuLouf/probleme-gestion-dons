@@ -21,12 +21,18 @@ namespace probleme_gestion_dons
         static int demanderInt(string demande="",int min = -1, int max = -1)
         {
             bool err = false;
-            bool minmax = true;
-            if(min==-1 && max==-1)
+            bool est_minmax = false;
+            bool est_min = false;
+            if (min != -1 && max != -1)
             {
-                minmax = false;
+                est_minmax = true;
             }
-            int result=-2;
+            else if (max == -1 && min != -1)
+            {
+                est_min = true;
+            }
+
+            int result = -2;
 
             do
             {
@@ -39,18 +45,62 @@ namespace probleme_gestion_dons
                 {
                     err = true;
                 }
-            } while (err == true || (minmax==true && (result < min || result > max)));
+            } while (err == true || (est_minmax == true && (result < min || result > max)) || (est_min == true && (result < min)));
+            return result;
+        }
+        static double demanderDouble(string demande = "", double min = -1, double max = -1)
+        {
+            bool err = false;
+            bool est_minmax = false;
+            bool est_min = false;
+            if (min != -1 && max != -1)
+            {
+                est_minmax = true;
+            }
+            else if(max==-1 && min!=-1)
+            {
+                est_min = true;
+            }
+                
+            double result = -2;
+
+            do
+            {
+                try
+                {
+                    result = Convert.ToDouble(demanderString(demande));
+                    err = false;
+                }
+                catch
+                {
+                    err = true;
+                }
+            } while (err == true || (est_minmax == true && (result < min || result > max)) || (est_min==true && (result<min)) );
             return result;
         }
         static Objet entrerObjet()
         {
+            Objet result=null;
+            int choix = demanderInt("Est-ce un objet volumineux ? 1-Oui 2-Non", 1, 2);
+
             string type = demanderString("Entrez le type de l'objet");
             string description_objet = demanderString("Entrez la description de l'objet");
             int montant = demanderInt("Entrez le montant de l'objet");
-            Objet result = new Objet(type, description_objet, montant);
+
+            if(choix ==1)
+            {
+                double hauteur = demanderDouble("Sa hauteur",0);
+                double largeur = demanderDouble("Sa largeur",0);
+                double longueur = demanderDouble("Sa longueur",0);
+                result = new Objet_volumineux(type, description_objet, montant, hauteur, largeur, longueur);
+            }
+            else
+            {
+                result = new Objet(type, description_objet, montant);
+            }
+            
             return result;
         }
-
         static Don entrerDon(Association assos)
         {
             Console.WriteLine("Saisie des informations du Don : \n");
@@ -121,6 +171,13 @@ namespace probleme_gestion_dons
             return liste;
         }
 
+        public static void Creation_Don(Association asso)
+        {
+            asso.Liste_adherent.ForEach(x => Console.WriteLine(x));
+            Don d = entrerDon(asso);
+            asso.AjouterDonAttente(d);
+        }
+
         static void Main(string[] args)
         {
             List<Personne_adherente> liste_adherent = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
@@ -130,10 +187,17 @@ namespace probleme_gestion_dons
 
             Console.WriteLine(assos.findByNom_Beneficiaire("Lemarechal").ToString());
 
+            
+            Don dd = entrerDon(assos);
+            
+            assos.AjouterDonAttente(dd);
 
-            Don d = entrerDon(assos);
-            assos.AjouterDonAttente(d);
-            assos.ValiderDon(d, demanderInt("1-Valider ce don 2-Refuser le don", 1, 2));
+            //assos.ValiderDon(d, demanderInt("1-Valider ce don 2-Refuser le don", 1, 2));
+
+            Console.WriteLine("dons en attente :");
+            assos.Dons_attente.ForEach(x => Console.WriteLine(x));
+            Console.WriteLine("dons valides :");
+            assos.Dons_valide.ForEach(x => Console.WriteLine(x));
 
             Console.ReadKey();
         }

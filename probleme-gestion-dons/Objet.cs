@@ -26,7 +26,7 @@ namespace probleme_gestion_dons
 
         public override string ToString()
         {
-            return "Objet n°" + this.reference_objet + " : " + this.type + " (" + this.description_objet + ") pour le prix de " + this.montant;
+            return "Objet n°" + this.reference_objet + " : " + this.type + " (" + this.description_objet + ") pour le prix de " + this.montant +"euros";
         }
 
         public Don Don_groupe
