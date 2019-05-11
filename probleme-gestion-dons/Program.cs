@@ -184,7 +184,7 @@ namespace probleme_gestion_dons
             List<Personne_beneficiaire> liste_beneficiaire = lecture_personnes_beneficiaire("..\\..\\data\\Beneficiaires.txt");
 
             Association assos = new Association(liste_adherent, liste_beneficiaire);
-
+            Console.WriteLine(assos.AvgAge_Beneficiaires.TotalDays/365 + "Years");
             Console.WriteLine(assos.findByNom_Beneficiaire("Lemarechal").ToString());
 
             
@@ -198,6 +198,8 @@ namespace probleme_gestion_dons
             assos.Dons_attente.ForEach(x => Console.WriteLine(x));
             Console.WriteLine("dons valides :");
             assos.Dons_valide.ForEach(x => Console.WriteLine(x));
+
+            
 
             Console.ReadKey();
         }

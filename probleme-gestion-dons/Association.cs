@@ -60,13 +60,27 @@ namespace probleme_gestion_dons
 
         //-----Autres-----//
 
+        public TimeSpan AvgAge_Beneficiaires
+        {
+            get
+            {
+                List<TimeSpan> liste = new List<TimeSpan>();
+                foreach (Personne_beneficiaire a in liste_beneficiaire)
+                {
+                    liste.Add(DateTime.Now - a.DateNaissance);
+                }
+
+                TimeSpan avg = TimeSpan.FromMilliseconds(liste.Average(ts => ts.TotalMilliseconds));
+                
+                return avg;
+            }
+        }
         public void AjouterDonAttente(Don d)
         {
             this.dons_attente.Add(d);
         }
 
         public void ValiderDon(Don d,int choix)
-
         {
             if (dons_attente.Exists((x) => x.Id == d.Id))
             {
