@@ -171,6 +171,7 @@ namespace probleme_gestion_dons
             return liste;
         }
 
+        //Fonctions Menu
         public static void Creation_Don(Association asso)
         {
             asso.Liste_adherent.ForEach(x => Console.WriteLine(x));
@@ -178,30 +179,63 @@ namespace probleme_gestion_dons
             asso.AjouterDonAttente(d);
         }
 
+        public static void Gestion_Dons_Attente(Association asso)
+        {
+            asso.Dons_attente.ForEach(x => Console.WriteLine(x));
+            int id = demanderInt("Entrer l'ID du don à gerer", 1);
+            Don d = asso.findById_donAttente(id);
+            asso.ValiderDon(d, demanderInt("1-Valider ce don 2-Refuser le don", 1, 2));
+        }
+
         static void Main(string[] args)
         {
             List<Personne_adherente> liste_adherent = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
             List<Personne_beneficiaire> liste_beneficiaire = lecture_personnes_beneficiaire("..\\..\\data\\Beneficiaires.txt");
 
-            Association assos = new Association(liste_adherent, liste_beneficiaire);
-            Console.WriteLine(assos.AvgAge_Beneficiaires.TotalDays/365 + "Years");
-            Console.WriteLine(assos.findByNom_Beneficiaire("Lemarechal").ToString());
+            Association asso = new Association(liste_adherent, liste_beneficiaire);
+           
+            bool fin = false;
 
-            
-            Don dd = entrerDon(assos);
-            
-            assos.AjouterDonAttente(dd);
+            do
+            {
+                fin = false;
+                Console.WriteLine();
+                Console.WriteLine("1 : Ajouter un don au logiciel");
+                Console.WriteLine("2 : Accepter ou refuser un don");
+                Console.WriteLine("3 : Afficher dons");
+                Console.WriteLine("4 : Fin du programme");
 
-            //assos.ValiderDon(d, demanderInt("1-Valider ce don 2-Refuser le don", 1, 2));
+                int lecture = demanderInt("Choisissez votre programme", 1, 3);
 
-            Console.WriteLine("dons en attente :");
-            assos.Dons_attente.ForEach(x => Console.WriteLine(x));
-            Console.WriteLine("dons valides :");
-            assos.Dons_valide.ForEach(x => Console.WriteLine(x));
+                switch (lecture)
+                {
+                    case 1:
+                        Console.Clear();
+                        Creation_Don(asso);
+                        break;
+                    case 2:
+                        Console.Clear();
+                        Gestion_Dons_Attente(asso);
+                        break;
+                    case 3:
+                        Console.Clear();
+                        Console.WriteLine("Dons en attente :");
+                        asso.Dons_attente.ForEach(x => Console.WriteLine(x));
+                        Console.WriteLine("Dons valides :");
+                        asso.Dons_valide.ForEach(x => Console.WriteLine(x));
+                        break;
+                    case 4:
+                        Console.Clear();
+                        Console.WriteLine("fin de programme...");
+                        Console.ReadKey();
+                        fin = true;
+                        break;
+                    default:
+                        Console.WriteLine("\nchoix non valide => faites un autre choix....");
+                        break;
+                }
+            } while (!fin);
 
-            
-
-            Console.ReadKey();
         }
     }
 }

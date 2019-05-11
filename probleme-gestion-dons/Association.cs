@@ -27,20 +27,22 @@ namespace probleme_gestion_dons
         {
             return this.liste_beneficiaire.Find(x => x.Telephone == numero);
         }
-
         public Personne_beneficiaire findByNom_Beneficiaire(string nom)
         {
             return this.liste_beneficiaire.Find(x => x.Nom == nom);
         }
-
         public Personne_adherente findByPhone_Adherent(string numero)
         {
             return this.liste_adherent.Find(x => x.Telephone == numero);
         }
-
         public Personne_adherente findByNom_Adherent(string nom)
         {
             return this.liste_adherent.Find(x => x.Nom == nom);
+        }
+
+        public Don findById_donAttente(int id)
+        {
+            return this.dons_attente.Find(x => x.Id == id);
         }
 
         //-----GET-SET-----//
