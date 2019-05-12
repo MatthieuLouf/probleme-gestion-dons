@@ -8,18 +8,35 @@ namespace probleme_gestion_dons
 {
     class Archive
     {
-        List<Don> liste_dons;
+        List<Don> liste_dons_archive;
+        List<Don> liste_dons_refuse;
         List<Transfert> liste_transferts;
 
-        public Archive(List<Don> liste_dons, List<Transfert> liste_transferts)
+        public List<Don> Dons_refuses
         {
-            this.liste_dons = liste_dons;
+            get
+            {
+                return this.liste_dons_refuse;
+            }
+        }
+
+        public Archive(List<Don> liste_dons_archive, List<Don> liste_dons_refuse, List<Transfert> liste_transferts)
+        {
+            this.liste_dons_archive = liste_dons_archive;
+            this.liste_dons_refuse = liste_dons_refuse;
             this.liste_transferts = liste_transferts;
         }
 
-        public void Add_don(Don don)
+        public void Add_don_archive(Don don)
         {
-            this.liste_dons.Add(don);
+            don.Status = "archive";
+            this.liste_dons_archive.Add(don);
+        }
+
+        public void Add_don_refuse(Don don)
+        {
+            don.Status = "refuse";
+            this.liste_dons_refuse.Add(don);
         }
     }
 }

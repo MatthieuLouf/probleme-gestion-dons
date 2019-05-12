@@ -12,6 +12,15 @@ namespace probleme_gestion_dons
         List<Personne_beneficiaire> liste_beneficiaire;
         List<Don> dons_attente;
         List<Don> dons_valide;
+        Archive archive_association;
+
+        public Archive Archive_association
+        {
+            get
+            {
+                return this.archive_association;
+            }
+        }
 
         public Association(List<Personne_adherente> liste_adherent, List<Personne_beneficiaire> liste_beneficiaire)
         {
@@ -19,6 +28,7 @@ namespace probleme_gestion_dons
             this.liste_beneficiaire = liste_beneficiaire;
             this.dons_attente = new List<Don>();
             this.dons_valide = new List<Don>();
+            this.archive_association = new Archive(new List<Don>(), new List<Don>(), new List<Transfert>());
         }
 
         //-----findBy-----//
@@ -79,6 +89,7 @@ namespace probleme_gestion_dons
         }
         public void AjouterDonAttente(Don d)
         {
+            if (d.Status != "attente") d.Status = "attente";
             this.dons_attente.Add(d);
         }
 
@@ -88,12 +99,14 @@ namespace probleme_gestion_dons
             {
                 if (choix == 1)
                 {
+                    d.Status = "valide";
                     this.dons_valide.Add(d);
                     Console.WriteLine("Don validé !");
                 }
                 if(choix==2)
                 {
                     //Passage du don en Archivage
+                    this.Archive_association.Add_don_refuse(d);
                     Console.WriteLine("Don refusé et archivé (en cours de dev) !");
                 }
                 this.dons_attente.Remove(d);

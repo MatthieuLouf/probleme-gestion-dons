@@ -187,6 +187,21 @@ namespace probleme_gestion_dons
             asso.ValiderDon(d, demanderInt("1-Valider ce don 2-Refuser le don", 1, 2));
         }
 
+        public static void Lister_Dons_refuse_date(Association assos)
+        {
+            List<Don> liste = assos.Archive_association.Dons_refuses;
+            liste.Sort((a, b) => a.Date.CompareTo(b.Date));
+            liste.ForEach(x => Console.WriteLine(x.ToString()));
+        }
+
+        public static void Lister_Dons_en_traitement(Association assos, Comparison<Don> methode)
+        {
+            List<Don> liste = assos.Dons_attente;
+            assos.Dons_valide.ForEach(x => liste.Add(x));
+            liste.Sort(methode);
+            liste.ForEach(x => Console.WriteLine(x.ToString()));
+        }
+
         static void Main(string[] args)
         {
             List<Personne_adherente> liste_adherent = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
@@ -203,9 +218,11 @@ namespace probleme_gestion_dons
                 Console.WriteLine("1 : Ajouter un don au logiciel");
                 Console.WriteLine("2 : Accepter ou refuser un don");
                 Console.WriteLine("3 : Afficher dons");
-                Console.WriteLine("4 : Fin du programme");
+                Console.WriteLine("4 : Liste dons refusés triés par date");
+                Console.WriteLine("5 : Liste dons en traitement");
+                Console.WriteLine("10 : Fin du programme");
 
-                int lecture = demanderInt("Choisissez votre programme", 1, 3);
+                int lecture = demanderInt("Choisissez votre programme", 1, 10);
 
                 switch (lecture)
                 {
@@ -224,12 +241,29 @@ namespace probleme_gestion_dons
                         Console.WriteLine("Dons valides :");
                         asso.Dons_valide.ForEach(x => Console.WriteLine(x));
                         break;
+                    
                     case 4:
+                        Console.Clear();
+                        Console.WriteLine("Liste dons triés par date");
+                        Lister_Dons_refuse_date(asso);
+                        break;
+
+                    case 5:
+                        Console.Clear();
+                        Console.WriteLine("Liste dons en traitement triés par ID");
+                        Lister_Dons_en_traitement(asso, (a, b) => a.Id.CompareTo(b.Id));
+                        Console.ReadKey();
+                        Console.WriteLine("\nListe dons en traitement triés par Nom");
+                        Lister_Dons_en_traitement(asso, (a, b) => a.Nom_Donateur.CompareTo(b.Nom_Donateur));
+                        break;
+
+                    case 10:
                         Console.Clear();
                         Console.WriteLine("fin de programme...");
                         Console.ReadKey();
                         fin = true;
                         break;
+                    
                     default:
                         Console.WriteLine("\nchoix non valide => faites un autre choix....");
                         break;

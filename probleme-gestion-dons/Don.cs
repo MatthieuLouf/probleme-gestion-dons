@@ -16,6 +16,34 @@ namespace probleme_gestion_dons
         List<Objet> liste_objets;
         Personne_adherente donateur;
 
+        public DateTime Date
+        {
+            get
+            {
+                return this.date_reception_don;
+            }
+        }
+
+        public string Status
+        {
+            get
+            {
+                return this.status;
+            }
+            set
+            {
+                this.status = value;
+            }
+        }
+
+        public String Nom_Donateur
+        {
+            get
+            {
+                return this.donateur.Nom;
+            }
+        }
+
         public Don(DateTime date_reception_don, string description_don, string status, List<Objet> liste_objets, Personne_adherente donateur)
         {
             compteur++;
