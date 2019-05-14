@@ -16,6 +16,21 @@ namespace probleme_gestion_dons
         double solde;
         List<Objet> objets_stockes;
 
+        public string Type
+        {
+            get
+            {
+                return this.type;
+            }
+        }
+
+        public List<Objet> Liste_objets_stockes
+        {
+            get
+            {
+                return this.objets_stockes;
+            }
+        }
         public Lieu_Stockage(string type, string adresse, double volume,double solde)
         {
             compteur++;

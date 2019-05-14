@@ -16,6 +16,13 @@ namespace probleme_gestion_dons
         Don don_groupe;
         List<string[]> informations_supplementaires;
 
+        public string Description
+        {
+            get
+            {
+                return description_objet;
+            }
+        }
         public Objet(string type, string description_objet, double montant, List<string[]> info_sup)
         {
             this.reference_objet = compteur;

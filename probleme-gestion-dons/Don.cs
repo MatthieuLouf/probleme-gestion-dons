@@ -36,11 +36,19 @@ namespace probleme_gestion_dons
             }
         }
 
-        public String Nom_Donateur
+        public string Nom_Donateur
         {
             get
             {
                 return this.donateur.Nom;
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return this.description_don;
             }
         }
 

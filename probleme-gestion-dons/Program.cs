@@ -305,7 +305,18 @@ namespace probleme_gestion_dons
             liste.Sort(methode);
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
-        
+
+        public static void Lister_Dons_par_entrepots(Association assos, Comparison<Objet> methode)
+        {
+            List<Objet> liste = new List<Objet>();
+            assos.Lieux_stock.ForEach(delegate (Lieu_Stockage l) {
+                l.Liste_objets_stockes.Sort(methode);
+                l.Liste_objets_stockes.ForEach(x => Console.WriteLine(x.ToString()));
+            });
+            
+            liste.ForEach(x => Console.WriteLine(x.ToString()));
+        }
+
 
         static void Main(string[] args)
         {
@@ -326,6 +337,7 @@ namespace probleme_gestion_dons
                 Console.WriteLine("4 : Liste dons refusés triés par date");
                 Console.WriteLine("5 : Liste dons en traitement par Id et par Nom");
                 Console.WriteLine("6 : Liste dons vendus par mois et par numéro de bénéficiaires");
+                Console.WriteLine("7 : Liste dons stockés par entrepôt et par catégorie/description");
                 Console.WriteLine("10 : Fin du programme");
 
                 int lecture = demanderInt("Choisissez votre programme", 1, 10);
@@ -343,7 +355,7 @@ namespace probleme_gestion_dons
                     case 3:
                         Console.Clear();
                         Console.WriteLine("Dons en attente :");
-                        //asso.Dons_attente.ForEach(x => Console.WriteLine(x));
+                        asso.Dons_attente.ToList().ForEach(x => Console.WriteLine(x));
                         Console.WriteLine("Dons valides :");
                         asso.Archive_association.Dons_archive.ForEach(x => Console.WriteLine(x));
                         break;
@@ -366,10 +378,16 @@ namespace probleme_gestion_dons
                     case 6:
                         Console.Clear();
                         Console.WriteLine("Liste dons vendus triés par mois");
-                        //Lister_Dons_en_traitement(asso, (a, b) => a.Date.CompareTo(b.Date));
+                        Lister_Dons_vendus(asso, (a, b) => a.Date.CompareTo(b.Date));
                         Console.ReadKey();
                         Console.WriteLine("\nListe dons vendus triés par numéro de bénéficiaires");
-                        //Lister_Dons_en_traitement(asso, (a, b) => a.Id.CompareTo(b.Id));
+                        Lister_Dons_vendus(asso, (a, b) => a.Id.CompareTo(b.Id));
+                        break;
+
+                    case 7:
+                        Console.Clear();
+                        Console.WriteLine("Liste dons stockés par entrepots, par catégorie/description");
+                        Lister_Dons_vendus(asso, (a, b) => a.Description.CompareTo(b.Description));
                         break;
 
                     case 10:
