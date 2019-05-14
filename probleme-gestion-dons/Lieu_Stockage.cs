@@ -30,7 +30,7 @@ namespace probleme_gestion_dons
         public void Ajouter_Objet(Objet o)
         {
             this.objets_stockes.Add(o);
-            if (typeof(Objet)==o.GetType())
+            if (typeof(Objet_volumineux)==o.GetType())
             {
                 Objet_volumineux ov = (Objet_volumineux)o;
                 this.volume -= ov.Volume;
