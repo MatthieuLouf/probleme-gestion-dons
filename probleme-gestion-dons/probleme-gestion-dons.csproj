@@ -47,6 +47,7 @@
     <Compile Include="Association.cs" />
     <Compile Include="Don.cs" />
     <Compile Include="IIdentifiable.cs" />
+    <Compile Include="Lieu_Stockage.cs" />
     <Compile Include="Objet.cs" />
     <Compile Include="Objet_volumineux.cs" />
     <Compile Include="Personne.cs" />
