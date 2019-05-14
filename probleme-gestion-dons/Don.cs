@@ -79,5 +79,10 @@ namespace probleme_gestion_dons
             get { return this.id; }
             set { this.id = value; }
         }
+
+        public List<Objet> Liste_objets
+        {
+            get { return this.liste_objets; }
+        }
     }
 }

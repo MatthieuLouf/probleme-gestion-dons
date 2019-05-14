@@ -10,7 +10,8 @@ namespace probleme_gestion_dons
     {
         List<Personne_adherente> liste_adherent;
         List<Personne_beneficiaire> liste_beneficiaire;
-        List<Don> dons_attente;
+        Queue<Don> dons_attente;
+        Queue<Don> dons_donnateur;
         List<Don> dons_valide;
         Archive archive_association;
 
@@ -26,7 +27,8 @@ namespace probleme_gestion_dons
         {
             this.liste_adherent = liste_adherent;
             this.liste_beneficiaire = liste_beneficiaire;
-            this.dons_attente = new List<Don>();
+            this.dons_attente = new Queue<Don>();
+            this.dons_donnateur = new Queue<Don>();
             this.dons_valide = new List<Don>();
             this.archive_association = new Archive(new List<Don>(), new List<Don>(), new List<Transfert>());
         }
@@ -50,19 +52,19 @@ namespace probleme_gestion_dons
             return this.liste_adherent.Find(x => x.Nom == nom);
         }
 
-        public Don findById_donAttente(int id)
-        {
-            return this.dons_attente.Find(x => x.Id == id);
-        }
 
         //-----GET-SET-----//
         public List<Personne_adherente> Liste_adherent
         {
             get { return this.liste_adherent; }
         }
-        public List<Don> Dons_attente
+        public Queue<Don> Dons_attente
         {
             get { return this.dons_attente; }
+        }
+        public Queue<Don> Dons_donnateur
+        {
+            get { return this.dons_donnateur; }
         }
         public List<Don> Dons_valide
         {
@@ -90,12 +92,17 @@ namespace probleme_gestion_dons
         public void AjouterDonAttente(Don d)
         {
             if (d.Status != "attente") d.Status = "attente";
-            this.dons_attente.Add(d);
+            this.dons_attente.Enqueue(d);
+        }
+        public void AjouterDonDonnateur(Don d)
+        {
+            if (d.Status != "chez_donnateur") d.Status = "chez_donnateur";
+            this.dons_donnateur.Enqueue(d);
         }
 
         public void ValiderDon(Don d,int choix)
         {
-            if (dons_attente.Exists((x) => x.Id == d.Id))
+            if (dons_attente.Contains(d))
             {
                 if (choix == 1)
                 {
@@ -109,7 +116,7 @@ namespace probleme_gestion_dons
                     this.Archive_association.Add_don_refuse(d);
                     Console.WriteLine("Don refusé et archivé (en cours de dev) !");
                 }
-                this.dons_attente.Remove(d);
+                this.dons_attente.Dequeue();
             }
         }
 

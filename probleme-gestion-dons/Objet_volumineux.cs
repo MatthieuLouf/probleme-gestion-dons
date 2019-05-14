@@ -21,7 +21,7 @@ namespace probleme_gestion_dons
 
         public override string ToString()
         {
-            return base.ToString() + ", hauteur : " + this.hauteur + " largeur : " + this.largeur + " longueur : " + this.longueur;
+            return base.ToString() + ", -> Lourd : hauteur : " + this.hauteur + " largeur : " + this.largeur + " longueur : " + this.longueur;
         }
     }
 }
