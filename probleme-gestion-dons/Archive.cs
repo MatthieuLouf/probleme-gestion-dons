@@ -19,6 +19,13 @@ namespace probleme_gestion_dons
                 return this.liste_dons_refuse;
             }
         }
+        public List<Don> Dons_archive
+        {
+            get
+            {
+                return this.liste_dons_archive;
+            }
+        }
 
         public Archive(List<Don> liste_dons_archive, List<Don> liste_dons_refuse, List<Transfert> liste_transferts)
         {

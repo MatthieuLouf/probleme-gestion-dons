@@ -80,23 +80,79 @@ namespace probleme_gestion_dons
         }
         static Objet entrerObjet()
         {
+            List<string> type_objets_volumineux = new List<string>();
+            type_objets_volumineux.Add("Matelas");
+            type_objets_volumineux.Add("Chevets");
+            type_objets_volumineux.Add("Armoires");
+            type_objets_volumineux.Add("Table");
+            type_objets_volumineux.Add("Chaises");
+            type_objets_volumineux.Add("Cuisinière");
+            type_objets_volumineux.Add("Réfrigérateurs");
+            type_objets_volumineux.Add("Lave-Linge");
+
+            List<string> type_objets_non_volumineux = new List<string>();
+            type_objets_non_volumineux.Add("Couverts");
+            type_objets_non_volumineux.Add("Assiettes");
+
             Objet result=null;
             int choix = demanderInt("Est-ce un objet volumineux ? 1-Oui 2-Non", 1, 2);
+            List<string[]> info_sup = new List<string[]>();
 
-            string type = demanderString("Entrez le type de l'objet");
+            string type = "";
+            if (choix == 1)
+            {
+                type_objets_volumineux.ForEach(x => Console.WriteLine(x.ToString()));
+                do
+                {
+                    type = demanderString("Entrez le type de l'objet");
+                } while (!type_objets_volumineux.Contains(type));
+                
+            }
+            else
+            {
+                type_objets_non_volumineux.ForEach(x => Console.WriteLine(x.ToString()));
+                do
+                {
+                    type = demanderString("Entrez le type de l'objet");
+                } while (!type_objets_non_volumineux.Contains(type));
+            }
+
+            if (type == "Table")
+            {
+                
+                string[] type_table = { "type", demanderString("Entrez le type de table : cuisine ou salon") };
+                string[] forme_table = { "forme", demanderString("Entrez la forme de la table : rectangulaire, carré ou ronde") };
+                info_sup.Add(type_table);
+                info_sup.Add(forme_table);
+
+
+            }
+            else if (type == "Cuisinière")
+            {
+                string[] puissance_cuisiniere = { "puissance", demanderString("Entrez la puissance") };
+                string[] nb_plaque_cuisiniere = { "nombre de plaques", demanderString("Entrez le nombre de plaques") };
+                info_sup.Add(puissance_cuisiniere);
+                info_sup.Add(nb_plaque_cuisiniere);
+            }
+            else if (type == "Couverts" || type == "Assiettes")
+            {
+                string[] nb_pieces = { "nombre de pièces", demanderString("Entrez le nombre de pièces") };
+                info_sup.Add(nb_pieces);
+            }
+
             string description_objet = demanderString("Entrez la description de l'objet");
             int montant = demanderInt("Entrez le montant de l'objet");
 
-            if(choix ==1)
+            if(choix == 1)
             {
                 double hauteur = demanderDouble("Sa hauteur",0);
                 double largeur = demanderDouble("Sa largeur",0);
                 double longueur = demanderDouble("Sa longueur",0);
-                result = new Objet_volumineux(type, description_objet, montant, hauteur, largeur, longueur);
+                result = new Objet_volumineux(type, description_objet, montant, info_sup, hauteur, largeur, longueur);
             }
             else
             {
-                result = new Objet(type, description_objet, montant);
+                result = new Objet(type, description_objet, montant, info_sup);
             }
             
             return result;
@@ -193,6 +249,12 @@ namespace probleme_gestion_dons
             liste.Sort((a, b) => a.Date.CompareTo(b.Date));
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
+        public static void Lister_Dons_vendus(Association assos, Comparison<Don> methode)
+        {
+            List<Don> liste = assos.Archive_association.Dons_archive;
+            liste.Sort(methode);
+            liste.ForEach(x => Console.WriteLine(x.ToString()));
+        }
 
         public static void Lister_Dons_en_traitement(Association assos, Comparison<Don> methode)
         {
@@ -219,7 +281,8 @@ namespace probleme_gestion_dons
                 Console.WriteLine("2 : Accepter ou refuser un don");
                 Console.WriteLine("3 : Afficher dons");
                 Console.WriteLine("4 : Liste dons refusés triés par date");
-                Console.WriteLine("5 : Liste dons en traitement");
+                Console.WriteLine("5 : Liste dons en traitement par Id et par Nom");
+                Console.WriteLine("6 : Liste dons vendus par mois et par numéro de bénéficiaires");
                 Console.WriteLine("10 : Fin du programme");
 
                 int lecture = demanderInt("Choisissez votre programme", 1, 10);
@@ -255,6 +318,15 @@ namespace probleme_gestion_dons
                         Console.ReadKey();
                         Console.WriteLine("\nListe dons en traitement triés par Nom");
                         Lister_Dons_en_traitement(asso, (a, b) => a.Nom_Donateur.CompareTo(b.Nom_Donateur));
+                        break;
+
+                    case 6:
+                        Console.Clear();
+                        Console.WriteLine("Liste dons vendus triés par mois");
+                        Lister_Dons_en_traitement(asso, (a, b) => a.Date.CompareTo(b.Date));
+                        Console.ReadKey();
+                        Console.WriteLine("\nListe dons vendus triés par numéro de bénéficiaires");
+                        Lister_Dons_en_traitement(asso, (a, b) => a.Id.CompareTo(b.Id));
                         break;
 
                     case 10:
