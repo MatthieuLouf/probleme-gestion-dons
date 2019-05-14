@@ -298,6 +298,14 @@ namespace probleme_gestion_dons
             liste.Sort((a, b) => a.Date.CompareTo(b.Date));
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
+        public static void Lister_Dons_en_traitement(Association assos, Comparison<Don> methode)
+        {
+            List<Don> liste = assos.Dons_attente.ToList<Don>();
+            assos.Dons_donnateur.ToList<Don>().ForEach(x => liste.Add(x));
+            liste.Sort(methode);
+            liste.ForEach(x => Console.WriteLine(x.ToString()));
+        }
+        
 
         static void Main(string[] args)
         {
@@ -337,7 +345,7 @@ namespace probleme_gestion_dons
                         Console.WriteLine("Dons en attente :");
                         //asso.Dons_attente.ForEach(x => Console.WriteLine(x));
                         Console.WriteLine("Dons valides :");
-                        asso.Dons_valide.ForEach(x => Console.WriteLine(x));
+                        asso.Archive_association.Dons_archive.ForEach(x => Console.WriteLine(x));
                         break;
                     
                     case 4:
@@ -349,10 +357,10 @@ namespace probleme_gestion_dons
                     case 5:
                         Console.Clear();
                         Console.WriteLine("Liste dons en traitement triés par ID");
-                        //Lister_Dons_en_traitement(asso, (a, b) => a.Id.CompareTo(b.Id));
+                        Lister_Dons_en_traitement(asso, (a, b) => a.Id.CompareTo(b.Id));
                         Console.ReadKey();
                         Console.WriteLine("\nListe dons en traitement triés par Nom");
-                        //Lister_Dons_en_traitement(asso, (a, b) => a.Nom_Donateur.CompareTo(b.Nom_Donateur));
+                        Lister_Dons_en_traitement(asso, (a, b) => a.Nom_Donateur.CompareTo(b.Nom_Donateur));
                         break;
 
                     case 6:

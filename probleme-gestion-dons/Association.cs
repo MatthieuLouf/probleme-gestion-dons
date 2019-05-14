@@ -12,7 +12,7 @@ namespace probleme_gestion_dons
         List<Personne_beneficiaire> liste_beneficiaire;
         Queue<Don> dons_attente;
         Queue<Don> dons_donnateur;
-        List<Don> dons_valide;
+        //List<Don> dons_valide;
         List<Lieu_Stockage> lieux_stock;
         Archive archive_association;
 
@@ -30,7 +30,7 @@ namespace probleme_gestion_dons
             this.liste_beneficiaire = liste_beneficiaire;
             this.dons_attente = new Queue<Don>();
             this.dons_donnateur = new Queue<Don>();
-            this.dons_valide = new List<Don>();
+            //this.dons_valide = new List<Don>();
             this.archive_association = new Archive(new List<Don>(), new List<Don>(), new List<Transfert>());
 
             this.lieux_stock = new List<Lieu_Stockage>();
@@ -72,10 +72,11 @@ namespace probleme_gestion_dons
         {
             get { return this.dons_donnateur; }
         }
+        /*
         public List<Don> Dons_valide
         {
             get { return this.dons_valide; }
-        }
+        }*/
         public List<Lieu_Stockage> Lieux_stock
         {
             get { return this.lieux_stock; }
@@ -116,14 +117,14 @@ namespace probleme_gestion_dons
                 if (choix == 1)
                 {
                     d.Status = "valide";
-                    this.dons_valide.Add(d);
+                    this.Archive_association.Add_don_archive(d);
                     Console.WriteLine("Don validé !");
                 }
                 if(choix==2)
                 {
-                    //Passage du don en Archivage
+                    d.Status = "refuse";
                     this.Archive_association.Add_don_refuse(d);
-                    Console.WriteLine("Don refusé et archivé (en cours de dev) !");
+                    Console.WriteLine("Don refusé et archivé !");
                 }
                 this.dons_attente.Dequeue();
             }
