@@ -18,10 +18,13 @@ namespace probleme_gestion_dons
             this.largeur = largeur;
             this.longueur = longueur;
         }
-
         public override string ToString()
         {
             return base.ToString() + ", -> Lourd : hauteur : " + this.hauteur + " largeur : " + this.largeur + " longueur : " + this.longueur;
+        }
+        public double Volume
+        {
+            get { return this.hauteur * this.largeur * this.longueur; }
         }
     }
 }

@@ -13,11 +13,13 @@ namespace probleme_gestion_dons
         string type;
         string adresse;
         double volume;
+        double solde;
         List<Objet> objets_stockes;
 
-        public Lieu_Stockage(string type, string adresse, double volume)
+        public Lieu_Stockage(string type, string adresse, double volume,double solde)
         {
             compteur++;
+            this.solde = solde;
             this.id = compteur;
             this.type = type;
             this.adresse = adresse;
@@ -27,11 +29,31 @@ namespace probleme_gestion_dons
         
         public void Ajouter_Objet(Objet o)
         {
-            if(typeof(Objet)==o.GetType())
+            this.objets_stockes.Add(o);
+            if (typeof(Objet)==o.GetType())
             {
-                this.objets_stockes.Add(o);
+                Objet_volumineux ov = (Objet_volumineux)o;
+                this.volume -= ov.Volume;
             }
-            
+        }
+
+        public double Volume_Restant()
+        {
+            double volume_restant = volume;
+            for(int i =0;i<this.objets_stockes.Count;i++)
+            {
+                if(typeof(Objet_volumineux)==objets_stockes[i].GetType())
+                {
+                    Objet_volumineux ov = (Objet_volumineux)objets_stockes[i];
+                    volume_restant -= ov.Volume;
+                }
+            }
+            return volume_restant;
+        }
+
+        public override string ToString()
+        {
+            return "Lieu n°" + this.id + " : Type : " + this.type + ", Adresse : " + this.adresse + ", Volume restant : " + this.Volume_Restant() + ", Solde : " + this.solde;
         }
     }
 }

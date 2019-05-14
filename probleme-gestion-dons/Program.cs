@@ -194,20 +194,41 @@ namespace probleme_gestion_dons
                 }
                 else
                 {
-                    Gestion_Stockage(d);
+                    Gestion_Stockage(d,asso);
                 }
             }
         }
 
-        public static void Gestion_Stockage(Don d)
+        public static void Gestion_Stockage(Don d,Association asso)
         {
             List<Objet> ls = d.Liste_objets;
             for(int i=0;i<ls.Count;i++)
             {
-                Console.WriteLine(ls[i]);
-                Console.WriteLine(ls[i].GetType());
-                Console.WriteLine(typeof(Objet));
+                Stocker_Objet(ls[i], asso);
             }
+        }
+        public static void Stocker_Objet(Objet o, Association a)
+        {
+            List<Lieu_Stockage> ls = a.Lieux_stock;
+            ls.ForEach(x => Console.WriteLine(x));
+            Console.WriteLine("\n" + o);
+
+            int choix = -1;
+
+            if (typeof(Objet_volumineux) == o.GetType())
+            {
+                Objet_volumineux ov = (Objet_volumineux)o;
+                do
+                {
+                    choix = demanderInt("Dans quel lieu voulez vous le stocker cet objet lourd", 1, ls.Count);
+                } while (ls[choix - 1].Volume_Restant() < ov.Volume);
+            }
+            else
+            {
+                choix = demanderInt("Dans quel lieu voulez vous le stocker", 1, ls.Count);
+            }
+            ls[choix - 1].Ajouter_Objet(o);
+    
         }
 
         public static void Lister_Dons_refuse_date(Association assos)

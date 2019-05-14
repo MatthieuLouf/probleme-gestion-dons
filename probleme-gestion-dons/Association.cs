@@ -13,6 +13,7 @@ namespace probleme_gestion_dons
         Queue<Don> dons_attente;
         Queue<Don> dons_donnateur;
         List<Don> dons_valide;
+        List<Lieu_Stockage> lieux_stock;
         Archive archive_association;
 
         public Archive Archive_association
@@ -31,6 +32,11 @@ namespace probleme_gestion_dons
             this.dons_donnateur = new Queue<Don>();
             this.dons_valide = new List<Don>();
             this.archive_association = new Archive(new List<Don>(), new List<Don>(), new List<Transfert>());
+
+            this.lieux_stock = new List<Lieu_Stockage>();
+            this.lieux_stock.Add(new Lieu_Stockage("association", "18 rue Jean-Moulin 75002 Paris", 200,0));
+            this.lieux_stock.Add(new Lieu_Stockage("entrepot", "1842 avenue Roger Salengro 75011 Paris", 400,0));
+            this.lieux_stock.Add(new Lieu_Stockage("depot_vente", "106 impasse du Chene 75019 Paris", 250, 1200));
         }
 
         //-----findBy-----//
@@ -70,7 +76,10 @@ namespace probleme_gestion_dons
         {
             get { return this.dons_valide; }
         }
-
+        public List<Lieu_Stockage> Lieux_stock
+        {
+            get { return this.lieux_stock; }
+        }
 
         //-----Autres-----//
 
