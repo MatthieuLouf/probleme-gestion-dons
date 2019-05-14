@@ -10,7 +10,15 @@ namespace probleme_gestion_dons
     {
         double prix;
         DateTime date;
+        Objet objet_transfert;
+        Personne_beneficiaire beneficiaire;
 
-
+        public Transfert(double prix, DateTime date, Objet objet_transfert)
+        {
+            this.prix = prix;
+            this.date = date;
+            this.objet_transfert = objet_transfert;
+            this.date = DateTime.Now;
+        }
     }
 }

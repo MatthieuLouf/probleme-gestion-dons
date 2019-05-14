@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace probleme_gestion_dons
 {
-    class Objet
+    class Objet:IIdentifiable
     {
         static int compteur = 0;
         int reference_objet;
@@ -25,8 +25,8 @@ namespace probleme_gestion_dons
         }
         public Objet(string type, string description_objet, double montant, List<string[]> info_sup)
         {
-            this.reference_objet = compteur;
             compteur++;
+            this.reference_objet = compteur;
             this.type = type;
             this.description_objet = description_objet;
             this.montant = montant;
@@ -45,6 +45,12 @@ namespace probleme_gestion_dons
         public Don Don_groupe
         {
             set { this.don_groupe = value; }
+        }
+
+        public int Id
+        {
+            get { return this.reference_objet; }
+            set { this.reference_objet = value; }
         }
     }
 }

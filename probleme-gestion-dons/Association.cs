@@ -64,6 +64,10 @@ namespace probleme_gestion_dons
         {
             get { return this.liste_adherent; }
         }
+        public List<Personne_beneficiaire> Liste_beneficiaire
+        {
+            get { return this.liste_beneficiaire; }
+        }
         public Queue<Don> Dons_attente
         {
             get { return this.dons_attente; }

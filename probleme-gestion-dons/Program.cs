@@ -103,7 +103,8 @@ namespace probleme_gestion_dons
             string type = "";
             if (choix == 1)
             {
-                type_objets_volumineux.ForEach(x => Console.WriteLine(x.ToString()));
+                type_objets_volumineux.ForEach(x => Console.Write(x.ToString()+", "));
+                Console.WriteLine();
                 do
                 {
                     type = demanderString("Entrez le type de l'objet");
@@ -112,7 +113,9 @@ namespace probleme_gestion_dons
             }
             else
             {
-                type_objets_non_volumineux.ForEach(x => Console.WriteLine(x.ToString()));
+                type_objets_non_volumineux.ForEach(x => Console.Write(x.ToString() + ", "));
+                Console.WriteLine();
+
                 do
                 {
                     type = demanderString("Entrez le type de l'objet");
@@ -161,7 +164,7 @@ namespace probleme_gestion_dons
         }
         static Don entrerDon(Association assos)
         {
-            Console.WriteLine("Saisie des informations du Don : \n");
+            Console.WriteLine("\nSaisie des informations du Don : \n");
 
             string status = "attente";
             DateTime date_reception_don = DateTime.Today;
@@ -175,7 +178,7 @@ namespace probleme_gestion_dons
             } while (p == null);
 
             string description_don = demanderString("Entrez la description du don");
-            int nb_objets = demanderInt("\nEntrez le nombre d'objets dans le don",1);
+            int nb_objets = demanderInt("Entrez le nombre d'objets dans le don",1);
 
 
             List<Objet> liste_objets = new List<Objet>();
@@ -254,6 +257,23 @@ namespace probleme_gestion_dons
                 }
             }
         }
+        public static void Gestion_Dons_Chez_Donnateur(Association asso)
+        {
+            if (asso.Dons_donnateur.Count != 0)
+            {
+                Don d = asso.Dons_donnateur.Dequeue();
+                Console.WriteLine(d);
+                int stocker_don = demanderInt("1-le stocker 2-le laisser chez le donnateur", 1, 2);
+                if (stocker_don == 2)
+                {
+                    asso.Dons_donnateur.Enqueue(d);
+                }
+                else
+                {
+                    Gestion_Stockage(d, asso);
+                }
+            }
+        }
         public static void Gestion_Stockage(Don d,Association asso)
         {
             List<Objet> ls = d.Liste_objets;
@@ -283,6 +303,31 @@ namespace probleme_gestion_dons
                 choix = demanderInt("Dans quel lieu voulez vous le stocker", 1, ls.Count);
             }
             ls[choix - 1].Ajouter_Objet(o);
+        }
+
+        public static void Gestion_Transfert(Association asso)
+        {
+            asso.Lieux_stock.ForEach(x => Console.WriteLine(x));
+            int choix = demanderInt("\nAvec quel lieu de stockage voulez vous faire un transfert - n°",1, asso.Lieux_stock.Count);
+
+            Lieu_Stockage stock = asso.Lieux_stock[choix - 1];
+            if(stock.Liste_objets_stockes.Count!=0)
+            {
+                List<Objet> ls_objets = stock.Liste_objets_stockes;
+                ls_objets.ForEach(x => Console.WriteLine(x));
+                int choix2 = -1;
+                do
+                {
+                    choix2 = demanderInt("\nQuel Objet voulez-vous transférer? - n°", 1);
+                } while (ls_objets.Find(x => x.Id == choix2)==null);
+                
+
+                List<Personne_beneficiaire> ls_benef = asso.Liste_beneficiaire;
+                ls_benef.ForEach(x => Console.WriteLine(x));
+                int choix3 = demanderInt("\nÀ quel bénéficiaire? - n°", 1, ls_benef.Count);
+            }
+
+
         }
       
         public static void Lister_Dons_vendus(Association assos, Comparison<Don> methode)
@@ -333,14 +378,17 @@ namespace probleme_gestion_dons
                 Console.WriteLine();
                 Console.WriteLine("1 : Ajouter un don au logiciel");
                 Console.WriteLine("2 : Accepter ou refuser un don");
-                Console.WriteLine("3 : Afficher dons");
-                Console.WriteLine("4 : Liste dons refusés triés par date");
-                Console.WriteLine("5 : Liste dons en traitement par Id et par Nom");
-                Console.WriteLine("6 : Liste dons vendus par mois et par numéro de bénéficiaires");
-                Console.WriteLine("7 : Liste dons stockés par entrepôt et par catégorie/description");
+                Console.WriteLine("3 : Déménager un don du donnateur");
+                Console.WriteLine("4 : Transferer un objet à un bénéficiaire");
+
+                Console.WriteLine("5 : Afficher dons");
+                Console.WriteLine("6 : Liste dons refusés triés par date");
+                Console.WriteLine("7 : Liste dons en traitement par Id et par Nom");
+                Console.WriteLine("8 : Liste dons vendus par mois et par numéro de bénéficiaires");
+                Console.WriteLine("9 : Liste dons stockés par entrepôt et par catégorie/description");
                 Console.WriteLine("10 : Fin du programme");
 
-                int lecture = demanderInt("Choisissez votre programme", 1, 10);
+                int lecture = demanderInt("\nChoisissez votre programme", 1, 10);
 
                 switch (lecture)
                 {
@@ -354,19 +402,27 @@ namespace probleme_gestion_dons
                         break;
                     case 3:
                         Console.Clear();
+                        Gestion_Dons_Chez_Donnateur(asso);
+                        break;
+                    case 4:
+                        Console.Clear();
+                        Gestion_Transfert(asso);
+                        break;
+                    case 5:
+                        Console.Clear();
                         Console.WriteLine("Dons en attente :");
                         asso.Dons_attente.ToList().ForEach(x => Console.WriteLine(x));
                         Console.WriteLine("Dons valides :");
                         asso.Archive_association.Dons_archive.ForEach(x => Console.WriteLine(x));
                         break;
                     
-                    case 4:
+                    case 6:
                         Console.Clear();
                         Console.WriteLine("Liste dons triés par date");
                         Lister_Dons_refuse_date(asso);
                         break;
 
-                    case 5:
+                    case 7:
                         Console.Clear();
                         Console.WriteLine("Liste dons en traitement triés par ID");
                         Lister_Dons_en_traitement(asso, (a, b) => a.Id.CompareTo(b.Id));
@@ -375,7 +431,7 @@ namespace probleme_gestion_dons
                         Lister_Dons_en_traitement(asso, (a, b) => a.Nom_Donateur.CompareTo(b.Nom_Donateur));
                         break;
 
-                    case 6:
+                    case 8:
                         Console.Clear();
                         Console.WriteLine("Liste dons vendus triés par mois");
                         Lister_Dons_vendus(asso, (a, b) => a.Date.CompareTo(b.Date));
@@ -384,7 +440,7 @@ namespace probleme_gestion_dons
                         Lister_Dons_vendus(asso, (a, b) => a.Id.CompareTo(b.Id));
                         break;
 
-                    case 7:
+                    case 9:
                         Console.Clear();
                         Console.WriteLine("Liste dons stockés par entrepots, par catégorie/description");
                         Lister_Dons_vendus(asso, (a, b) => a.Description.CompareTo(b.Description));
