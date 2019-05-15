@@ -220,6 +220,7 @@ namespace probleme_gestion_dons
                     Gestion_Stockage(d,asso);
                 }
             }
+            else { Console.WriteLine("Pas de dons en attende de validation !"); }
         }
         public static void Gestion_Dons_Chez_Donnateur(Association asso)
         {
@@ -237,6 +238,7 @@ namespace probleme_gestion_dons
                     Gestion_Stockage(d, asso);
                 }
             }
+            else { Console.WriteLine("Pas de dons en attente chez les donnateurs !"); }
         }
         public static void Gestion_Stockage(Don d,Association asso)
         {
