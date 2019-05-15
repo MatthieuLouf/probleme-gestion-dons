@@ -45,7 +45,7 @@ namespace probleme_gestion_dons
 
         public override string ToString()
         {
-            string str = "Objet n°" + this.reference_objet + " : " + this.type + " (" + this.description_objet + ") pour le prix de " + this.montant + "euros\n        Informations supplémentaires :";
+            string str = "Objet Id n°" + this.reference_objet + " : " + this.type + " (" + this.description_objet + ") pour le prix de " + this.montant + "euros\n        Informations supplémentaires :";
             this.informations_supplementaires.ForEach(x => str += "\n        " + x[0] + " : " + x[1]);
             return str;
         }
