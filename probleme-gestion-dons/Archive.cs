@@ -64,5 +64,20 @@ namespace probleme_gestion_dons
         {
             this.liste_transferts.Add(trans);
         }
+
+        public override string ToString()
+        {
+            string result = "";
+            result += "Dons Validés archivés\n";
+            this.liste_dons_archive.ForEach(x => result += x+"\n");
+
+            result += "Dons Validés refusés\n";
+            this.liste_dons_refuse.ForEach(x => result += x + "\n");
+
+            result += "Transferts effectués\n";
+            this.liste_transferts.ForEach(x => result += x + "\n");
+
+            return result;
+        }
     }
 }

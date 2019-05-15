@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace probleme_gestion_dons
 {
-    class Transfert
+    class Transfert :IComparable
     {
         double prix;
         DateTime date;
@@ -41,6 +41,12 @@ namespace probleme_gestion_dons
         public override string ToString()
         {
             return "Vente pour " + prix + " euros, de :\n" + objet_transfert + "\n venant de " + provenance + "\transfere à " + beneficiaire;
+        }
+
+        public int CompareTo(object o)
+        {
+            Transfert t = (Transfert)o;
+            return this.date.CompareTo(t.Date);
         }
     }
 }

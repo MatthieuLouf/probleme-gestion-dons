@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace probleme_gestion_dons
 {
-    public abstract class Personne
+    public abstract class Personne : IIdentifiable,IComparable
     {
         protected string nom;
         protected int identifiant;
@@ -38,6 +38,18 @@ namespace probleme_gestion_dons
         public override string ToString()
         {
             return "Personne n°" + this.identifiant + " Nom :" + this.nom + " Tel : " + this.telephone ;
+        }
+
+        public int Id
+        {
+            get { return this.identifiant; }
+            set { this.identifiant = value; }
+        }
+
+        public int CompareTo(object o)
+        {
+            Personne p = (Personne)o;
+            return this.identifiant.CompareTo(p.Id);
         }
     }
 }
