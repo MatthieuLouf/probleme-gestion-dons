@@ -196,8 +196,12 @@ namespace probleme_gestion_dons
         public static void Creation_Don(Association asso)
         {
             asso.Liste_adherent.ForEach(x => Console.WriteLine(x));
-            Don d = entrerDon(asso);
-            asso.AjouterDonAttente(d);
+            if(asso.Liste_adherent.Count!=0)
+            {
+                Don d = entrerDon(asso);
+                asso.AjouterDonAttente(d);
+            }
+            else { Console.WriteLine("Aucun adhérent rentré dans le logiciel!"); }
         }
         public static void Gestion_Dons_Attente(Association asso)
         {
@@ -292,7 +296,7 @@ namespace probleme_gestion_dons
                     prix = demanderDouble("Pour quel prix ?", 0, -1);
                 }
 
-                Transfert trans = new Transfert(prix, ls_objets.Find(x => x.Id == choix2), ls_benef[choix3 - 1]);
+                Transfert trans = new Transfert(prix, ls_objets.Find(x => x.Id == choix2), ls_benef[choix3 - 1],stock);
                 asso.Transferer_Objet(stock, trans);
                 Console.WriteLine("Objet transféré à " + ls_benef[choix3 - 1].Nom + "!");
             }
@@ -381,6 +385,7 @@ namespace probleme_gestion_dons
         }
 
         //Fonctions Module Stats
+        //public static void Moyenne_Temps_Avant_Transfert();
 
         //Fonctions Menu des Modules
         static void Module_Personne(Association asso)
@@ -575,9 +580,11 @@ namespace probleme_gestion_dons
                 {
                     case 1:
                         Console.Clear();
+                        Console.WriteLine("La moyenne de temps de vente entre la validation des dons et leur transfert est de : " + asso.AvgTemps_Avant_Transfert.Days + " jours");
                         break;
                     case 2:
                         Console.Clear();
+                        Console.WriteLine("La moyenne des prix des objets stockés en depot_ventes est de " + asso.AvgPrix_Garde_Meubles + " euros");
                         break;
                     case 3:
                         Console.Clear();
