@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace probleme_gestion_dons
 {
-    class Lieu_Stockage
+    class Lieu_Stockage : IIdentifiable,IComparable
     {
         static int compteur = 0;
         int id;
@@ -79,9 +79,20 @@ namespace probleme_gestion_dons
             return volume_restant;
         }
 
+        public int Id
+        {
+            get { return this.id; }
+            set { this.id = value; }
+        }
         public override string ToString()
         {
             return "Lieu n°" + this.id + " : Type : " + this.type + ", Adresse : " + this.adresse + ", Volume restant : " + this.Volume_Restant() + ", Solde : " + this.solde;
+        }
+
+        public int CompareTo(object o)
+        {
+            Lieu_Stockage l = (Lieu_Stockage)o;
+            return this.id.CompareTo(l.Id);
         }
     }
 }

@@ -22,7 +22,6 @@ namespace probleme_gestion_dons
             {
                 Console.Write(demande +" : ");
             }
-
             return Console.ReadLine();
         }
 
@@ -153,8 +152,6 @@ namespace probleme_gestion_dons
                 string[] forme_table = { "forme", demanderString("Entrez la forme de la table : rectangulaire, carré ou ronde") };
                 info_sup.Add(type_table);
                 info_sup.Add(forme_table);
-
-
             }
             else if (type == "Cuisinière")
             {
@@ -420,7 +417,7 @@ namespace probleme_gestion_dons
                 }
             });
         }
-        //Fonctions Module Personne
+
         public static List<Personne_adherente> lecture_personnes_adherente(string fileName)
         {
             List<Personne_adherente> liste = new List<Personne_adherente>();

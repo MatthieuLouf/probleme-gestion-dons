@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace probleme_gestion_dons
 {
-    class Don : IIdentifiable
+    class Don : IIdentifiable, IComparable
     {
         static int compteur = 0;
         int id;
@@ -67,16 +67,6 @@ namespace probleme_gestion_dons
             this.donateur = donateur;
         }
 
-        public override string ToString()
-        {
-            string result = " Don n°"+ this.id+ "- Déposé le : " + this.date_reception_don.ToShortDateString() + ", description : " + this.description_don + "\n -> status : " + this.status +"\n";
-            for(int i =0;i<this.liste_objets.Count;i++)
-            {
-                result += "    " + this.liste_objets[i].ToString() + "\n";
-            }
-            return result;
-        }
-
         public string Description_don
         {
             get { return this.description_don; }
@@ -91,6 +81,22 @@ namespace probleme_gestion_dons
         public List<Objet> Liste_objets
         {
             get { return this.liste_objets; }
+        }
+
+        public override string ToString()
+        {
+            string result = " Don n°" + this.id + "- Déposé le : " + this.date_reception_don.ToShortDateString() + ", description : " + this.description_don + "\n -> status : " + this.status + "\n";
+            for (int i = 0; i < this.liste_objets.Count; i++)
+            {
+                result += "    " + this.liste_objets[i].ToString() + "\n";
+            }
+            return result;
+        }
+
+        public int CompareTo(object o)
+        {
+            Don d = (Don)o;
+            return this.date_reception_don.CompareTo(d.Date);
         }
     }
 }

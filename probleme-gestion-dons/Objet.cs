@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace probleme_gestion_dons
 {
-    class Objet:IIdentifiable
+    class Objet:IIdentifiable, IComparable
     {
         static int compteur = 0;
         int reference_objet;
@@ -63,6 +63,12 @@ namespace probleme_gestion_dons
         {
             get { return this.reference_objet; }
             set { this.reference_objet = value; }
+        }
+
+        public int CompareTo(object o)
+        {
+            Objet ob = (Objet)o;
+            return this.Id.CompareTo(ob.Id);
         }
     }
 }
