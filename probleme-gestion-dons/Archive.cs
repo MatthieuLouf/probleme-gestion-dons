@@ -34,6 +34,10 @@ namespace probleme_gestion_dons
             this.liste_transferts = liste_transferts;
         }
 
+        public List<Transfert> Liste_transferts
+        {
+            get { return this.liste_transferts; }
+        }
         public void Add_don_archive(Don don)
         {
             don.Status = "archive";

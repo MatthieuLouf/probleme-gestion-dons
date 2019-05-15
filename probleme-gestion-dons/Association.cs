@@ -85,8 +85,7 @@ namespace probleme_gestion_dons
             this.liste_beneficiaire = liste_beneficiaire;
         }
 
-        //-----Autres-----//
-
+        //-----Moyennes-----//
         public TimeSpan AvgAge_Beneficiaires
         {
             get
@@ -102,6 +101,47 @@ namespace probleme_gestion_dons
                 return avg;
             }
         }
+        public TimeSpan AvgTemps_Avant_Transfert
+        {
+            get
+            {
+                List<TimeSpan> liste = new List<TimeSpan>();
+                foreach (Transfert trans in this.archive_association.Liste_transferts)
+                {
+                    liste.Add(trans.Date - trans.Objet_transfert.Don_groupe.Date);
+                }
+
+                TimeSpan avg = TimeSpan.FromMilliseconds(liste.Average(ts => ts.TotalMilliseconds));
+
+                return avg;
+            }
+        }
+        public double AvgPrix_Garde_Meubles
+        {
+            get
+            {
+                int count_objets = 0;
+                double somme_prix = 0;
+                foreach(Lieu_Stockage lieu in this.lieux_stock)
+                {
+                    if(lieu.Type=="depot_vente")
+                    {
+                        foreach(Objet o in lieu.Liste_objets_stockes)
+                        {
+                            somme_prix += o.Montant;
+                            count_objets++;
+                        }
+                    }
+                }
+                double moy = 0;
+                if(count_objets!=0)
+                {
+                    moy=somme_prix / count_objets;
+                }
+                return moy;
+            }
+        }
+        //-----Autres-----//
         public void AjouterDonAttente(Don d)
         {
             if (d.Status != "attente") d.Status = "attente";

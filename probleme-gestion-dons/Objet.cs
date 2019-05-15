@@ -52,9 +52,13 @@ namespace probleme_gestion_dons
 
         public Don Don_groupe
         {
+            get { return this.don_groupe; }
             set { this.don_groupe = value; }
         }
-
+        public double Montant
+        {
+            get { return this.montant; }
+        }
         public int Id
         {
             get { return this.reference_objet; }
