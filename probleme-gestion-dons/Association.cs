@@ -12,7 +12,7 @@ namespace probleme_gestion_dons
         List<Personne_beneficiaire> liste_beneficiaire;
         Queue<Don> dons_attente;
         Queue<Don> dons_donnateur;
-        //List<Don> dons_valide;
+        
         List<Lieu_Stockage> lieux_stock;
         Archive archive_association;
 
