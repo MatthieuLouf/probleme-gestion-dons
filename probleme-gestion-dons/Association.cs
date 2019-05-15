@@ -34,9 +34,7 @@ namespace probleme_gestion_dons
             this.archive_association = new Archive(new List<Don>(), new List<Don>(), new List<Transfert>());
 
             this.lieux_stock = new List<Lieu_Stockage>();
-            this.lieux_stock.Add(new Lieu_Stockage("association", "18 rue Jean-Moulin 75002 Paris", 200,0));
-            this.lieux_stock.Add(new Lieu_Stockage("entrepot", "1842 avenue Roger Salengro 75011 Paris", 400,0));
-            this.lieux_stock.Add(new Lieu_Stockage("depot_vente", "106 impasse du Chene 75019 Paris", 250, 1200));
+
         }
 
         //-----findBy-----//
@@ -134,11 +132,26 @@ namespace probleme_gestion_dons
                 this.dons_attente.Dequeue();
             }
         }
-
         public void Transferer_Objet(Lieu_Stockage lieu, Transfert trans)
         {
             lieu.Retirer_Objet(trans.Objet_transfert, trans.Prix);
             this.archive_association.Add_objet_transfere(trans);
+        }
+
+        public void Init()
+        {
+            // Lieux de stockages
+            this.lieux_stock.Add(new Lieu_Stockage("association", "18 rue Jean-Moulin 75002 Paris", 200, 0));
+            this.lieux_stock.Add(new Lieu_Stockage("entrepot", "1842 avenue Roger Salengro 75011 Paris", 400, 0));
+            this.lieux_stock.Add(new Lieu_Stockage("depot_vente", "106 impasse du Chene 75019 Paris", 250, 1200));
+
+            // dons_attente & dons_donnateur
+            this.dons_attente.Enqueue(new Don(new DateTime(2019, 5, 1), "Don attente 1", "attente", new List<Objet>() { new Objet("Matelas", "un matelas normal", 0) }, this.findByNom_Adherent("Dupond")));
+            this.dons_attente.Enqueue(new Don(new DateTime(2019, 5, 2), "Don attente 2", "attente", new List<Objet>() { new Objet("Couverts", "de beaux couverts pour enfant", 1, new List<string[]>() { new string[2] { "nb de pièces", "8" } } ) }, this.findByNom_Adherent("Dupond")));
+
+            this.dons_donnateur.Enqueue(new Don(new DateTime(2019, 4, 25), "Don donnateur 1", "donnateur", new List<Objet>() { new Objet("Chevets", "un chevet normal", 0) }, this.findByNom_Adherent("Durand")));
+            this.dons_donnateur.Enqueue(new Don(new DateTime(2019, 4, 24), "Don donnateur 2", "donnateur", new List<Objet>() { new Objet("Assiettes", "de belles assiettes argentés", 50, new List<string[]>() { new string[2] { "nb de pièces", "12" } }) }, this.findByNom_Adherent("Durand")));
+
         }
 
     }

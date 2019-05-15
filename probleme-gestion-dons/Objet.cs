@@ -23,6 +23,14 @@ namespace probleme_gestion_dons
                 return description_objet;
             }
         }
+
+        public double Prix
+        {
+            get
+            {
+                return this.montant;
+            }
+        }
         public Objet(string type, string description_objet, double montant, List<string[]> info_sup)
         {
             compteur++;
