@@ -9,7 +9,6 @@ namespace probleme_gestion_dons
 {
     class Program
     {
-
         //Fonctions demande valeurs
         static string demanderString(string demande="")
         {
@@ -312,7 +311,6 @@ namespace probleme_gestion_dons
             liste.Sort(methode);
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
-
         public static void Lister_Dons_refuse_date(Association assos)
         {
             List<Don> liste = assos.Archive_association.Dons_refuses;
@@ -326,7 +324,6 @@ namespace probleme_gestion_dons
             liste.Sort(methode);
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
-
         public static void Lister_Dons_par_entrepots(Association assos, Comparison<Objet> methode)
         {
             List<Objet> liste = new List<Objet>();
@@ -560,6 +557,43 @@ namespace probleme_gestion_dons
                 }
             } while (!fin);
         }
+        static void Module_Stats(Association asso)
+        {
+            bool fin = false;
+            do
+            {
+                fin = false;
+                Console.WriteLine();
+                Console.WriteLine("1 : Moyenne de temps avant transfert");
+                Console.WriteLine("2 : Moyenne des prix dans les depots-ventes");
+                Console.WriteLine("3 : Moyenne age des bénéficiaires");
+
+                Console.WriteLine("\n0 : Revenir au menu général");
+                int lecture = demanderInt("\nChoisissez votre programme", 0, 3);
+
+                switch (lecture)
+                {
+                    case 1:
+                        Console.Clear();
+                        break;
+                    case 2:
+                        Console.Clear();
+                        break;
+                    case 3:
+                        Console.Clear();
+                        Console.WriteLine("La moyenne d'âge des bénéficiaires est : "+asso.AvgAge_Beneficiaires.Days/365);
+                        break;
+                    case 0:
+                        Console.Clear();
+                        fin = true;
+                        break;
+
+                    default:
+                        Console.WriteLine("\nchoix non valide => faites un autre choix....");
+                        break;
+                }
+            } while (!fin);
+        }
 
         static void Main(string[] args)
         {
@@ -597,7 +631,7 @@ namespace probleme_gestion_dons
                         break;
                     case 4:
                         Console.Clear();
-                        Console.WriteLine("Il arrive");
+                        Module_Stats(asso);
                         break;
                     case 5:
                         Console.Clear();
