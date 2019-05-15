@@ -38,18 +38,28 @@ namespace probleme_gestion_dons
         {
             get { return this.liste_transferts; }
         }
+        /// <summary>
+        /// Ajoute un don validé à l'archive
+        /// </summary>
+        /// <param name="don">don</param>
         public void Add_don_archive(Don don)
         {
             don.Status = "archive";
             this.liste_dons_archive.Add(don);
         }
-
+        /// <summary>
+        /// Ajoute un don à la liste des dons refusés
+        /// </summary>
+        /// <param name="don">don</param>
         public void Add_don_refuse(Don don)
         {
             don.Status = "refuse";
             this.liste_dons_refuse.Add(don);
         }
-
+        /// <summary>
+        /// Ajoute un Transfert à la liste des transferts effectués par l'assos
+        /// </summary>
+        /// <param name="trans"></param>
         public void Add_objet_transfere(Transfert trans)
         {
             this.liste_transferts.Add(trans);

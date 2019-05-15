@@ -16,14 +16,7 @@ namespace probleme_gestion_dons
         List<Lieu_Stockage> lieux_stock;
         Archive archive_association;
 
-        public Archive Archive_association
-        {
-            get
-            {
-                return this.archive_association;
-            }
-        }
-
+        //-----constructeur---//
         public Association()
         {
             this.liste_adherent = new List<Personne_adherente>();
@@ -37,27 +30,14 @@ namespace probleme_gestion_dons
 
         }
 
-        //-----findBy-----//
-
-        public Personne_beneficiaire findByPhone_Beneficiaire(string numero)
-        {
-            return this.liste_beneficiaire.Find(x => x.Telephone == numero);
-        }
-        public Personne_beneficiaire findByNom_Beneficiaire(string nom)
-        {
-            return this.liste_beneficiaire.Find(x => x.Nom == nom);
-        }
-        public Personne_adherente findByPhone_Adherent(string numero)
-        {
-            return this.liste_adherent.Find(x => x.Telephone == numero);
-        }
-        public Personne_adherente findByNom_Adherent(string nom)
-        {
-            return this.liste_adherent.Find(x => x.Nom == nom);
-        }
-
-
         //-----GET-SET-----//
+        public Archive Archive_association
+        {
+            get
+            {
+                return this.archive_association;
+            }
+        }
         public List<Personne_adherente> Liste_adherent
         {
             get { return this.liste_adherent; }
@@ -79,13 +59,10 @@ namespace probleme_gestion_dons
             get { return this.lieux_stock; }
         }
 
-        public void Set_Utilisateurs(List<Personne_adherente> liste_adherent, List<Personne_beneficiaire> liste_beneficiaire)
-        {
-            this.liste_adherent = liste_adherent;
-            this.liste_beneficiaire = liste_beneficiaire;
-        }
-
         //-----Moyennes-----//
+        /// <summary>
+        /// moyenne d'age des beneficiaires
+        /// </summary>
         public TimeSpan AvgAge_Beneficiaires
         {
             get
@@ -97,10 +74,13 @@ namespace probleme_gestion_dons
                 }
 
                 TimeSpan avg = TimeSpan.FromMilliseconds(liste.Average(ts => ts.TotalMilliseconds));
-                
+
                 return avg;
             }
         }
+        /// <summary>
+        /// moyenne de temps avant le tranfert
+        /// </summary>
         public TimeSpan AvgTemps_Avant_Transfert
         {
             get
@@ -116,17 +96,20 @@ namespace probleme_gestion_dons
                 return avg;
             }
         }
+        /// <summary>
+        /// Renvoie la moyenne des prix des objets contenus dans le garde-meuble
+        /// </summary>
         public double AvgPrix_Garde_Meubles
         {
             get
             {
                 int count_objets = 0;
                 double somme_prix = 0;
-                foreach(Lieu_Stockage lieu in this.lieux_stock)
+                foreach (Lieu_Stockage lieu in this.lieux_stock)
                 {
-                    if(lieu.Type=="depot_vente")
+                    if (lieu.Type == "depot_vente")
                     {
-                        foreach(Objet o in lieu.Liste_objets_stockes)
+                        foreach (Objet o in lieu.Liste_objets_stockes)
                         {
                             somme_prix += o.Montant;
                             count_objets++;
@@ -134,25 +117,87 @@ namespace probleme_gestion_dons
                     }
                 }
                 double moy = 0;
-                if(count_objets!=0)
+                if (count_objets != 0)
                 {
-                    moy=somme_prix / count_objets;
+                    moy = somme_prix / count_objets;
                 }
                 return moy;
             }
         }
+
+        //-----findBy-----//
+        /// <summary>
+        /// Renvoie une personne selon son num de tel
+        /// </summary>
+        /// <param name="numero">numero de telephone</param>
+        /// <returns>personne_beneficiaire</returns>
+        public Personne_beneficiaire findByPhone_Beneficiaire(string numero)
+        {
+            return this.liste_beneficiaire.Find(x => x.Telephone == numero);
+        }
+        /// <summary>
+        /// Renvoie un beneficiaire selon son nom
+        /// </summary>
+        /// <param name="nom">nom</param>
+        /// <returns>personne_beneficiaire</returns>
+        public Personne_beneficiaire findByNom_Beneficiaire(string nom)
+        {
+            return this.liste_beneficiaire.Find(x => x.Nom == nom);
+        }
+        /// <summary>
+        /// Renvoie un adhérent selon le phone
+        /// </summary>
+        /// <param name="numero">numero</param>
+        /// <returns>personne_adherente</returns>
+        public Personne_adherente findByPhone_Adherent(string numero)
+        {
+            return this.liste_adherent.Find(x => x.Telephone == numero);
+        }
+        /// <summary>
+        /// Renvoie un adhérent selon son nom
+        /// </summary>
+        /// <param name="nom">nom</param>
+        /// <returns>personne_adherente</returns>
+        public Personne_adherente findByNom_Adherent(string nom)
+        {
+            return this.liste_adherent.Find(x => x.Nom == nom);
+        }
+        /// <summary>
+        /// Set la liste des adherents et des bénéficiaures de l'association selon celles donnéées en paramètres
+        /// </summary>
+        /// <param name="liste_adherent">liste_adherent</param>
+        /// <param name="liste_beneficiaire">liste_beneficiaire</param>
+        public void Set_Utilisateurs(List<Personne_adherente> liste_adherent, List<Personne_beneficiaire> liste_beneficiaire)
+        {
+            this.liste_adherent = liste_adherent;
+            this.liste_beneficiaire = liste_beneficiaire;
+        }
+
+        
         //-----Autres-----//
+        /// <summary>
+        /// Ajouter un don à la liste des dons en attente
+        /// </summary>
+        /// <param name="d">don</param>
         public void AjouterDonAttente(Don d)
         {
             if (d.Status != "attente") d.Status = "attente";
             this.dons_attente.Enqueue(d);
         }
+        /// <summary>
+        /// Ajouter don à un donateur
+        /// </summary>
+        /// <param name="d"></param>
         public void AjouterDonDonnateur(Don d)
         {
             if (d.Status != "chez_donnateur") d.Status = "chez_donnateur";
             this.dons_donnateur.Enqueue(d);
         }
-
+        /// <summary>
+        /// Permet de valider un don
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="choix"></param>
         public void ValiderDon(Don d,int choix)
         {
             if (dons_attente.Contains(d))
@@ -172,13 +217,19 @@ namespace probleme_gestion_dons
                 this.dons_attente.Dequeue();
             }
         }
-
+        /// <summary>
+        /// Permet de transferer un objet à un lieu de stockage
+        /// </summary>
+        /// <param name="lieu"></param>
+        /// <param name="trans"></param>
         public void Transferer_Objet(Lieu_Stockage lieu, Transfert trans)
         {
             lieu.Retirer_Objet(trans.Objet_transfert, trans.Prix);
             this.archive_association.Add_objet_transfere(trans);
         }
-
+        /// <summary>
+        /// Initialise les objet 
+        /// </summary>
         public void Init()
         {
             // Lieux de stockages

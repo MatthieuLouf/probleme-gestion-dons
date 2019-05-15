@@ -103,6 +103,10 @@ namespace probleme_gestion_dons
         #endregion
 
         #region Fonctions Module Don
+        /// <summary>
+        /// Permet de créer un objet selon les paramètres entrés par l'utilisateur
+        /// </summary>
+        /// <returns></returns>
         static Objet entrerObjet()
         {
             List<string> type_objets_volumineux = new List<string>();
@@ -183,6 +187,11 @@ namespace probleme_gestion_dons
             
             return result;
         }
+        /// <summary>
+        /// Permet de créer un don et le retourne
+        /// </summary>
+        /// <param name="assos"></param>
+        /// <returns></returns>
         static Don entrerDon(Association assos)
         {
             Console.WriteLine("\nSaisie des informations du Don : \n");
@@ -213,16 +222,24 @@ namespace probleme_gestion_dons
             Don result = new Don(date_reception_don, description_don, status, liste_objets, p);
             return result;
         }
+        /// <summary>
+        /// Permet de créer un don et l'ajoute à l'association
+        /// </summary>
+        /// <param name="asso">association</param>
         public static void Creation_Don(Association asso)
         {
             asso.Liste_adherent.ForEach(x => Console.WriteLine(x));
-            if(asso.Liste_adherent.Count!=0)
+            if(asso.Liste_adherent.Count != 0)
             {
                 Don d = entrerDon(asso);
                 asso.AjouterDonAttente(d);
             }
             else { Console.WriteLine("Aucun adhérent rentré dans le logiciel!"); }
         }
+        /// <summary>
+        /// Permet de valider ou refuser un don
+        /// </summary>
+        /// <param name="asso">asssociation</param>
         public static void Gestion_Dons_Attente(Association asso)
         {
             if(asso.Dons_attente.Count!=0)
@@ -242,6 +259,10 @@ namespace probleme_gestion_dons
             }
             else { Console.WriteLine("Pas de dons en attende de validation !"); }
         }
+        /// <summary>
+        /// Permet de retirer l'objet du donateur et de la stocker ailleurs
+        /// </summary>
+        /// <param name="asso">association</param>
         public static void Gestion_Dons_Chez_Donnateur(Association asso)
         {
             if (asso.Dons_donnateur.Count != 0)
@@ -260,6 +281,11 @@ namespace probleme_gestion_dons
             }
             else { Console.WriteLine("Pas de dons en attente chez les donnateurs !"); }
         }
+        /// <summary>
+        /// Stocke les objets d'un don
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="asso"></param>
         public static void Gestion_Stockage(Don d,Association asso)
         {
             List<Objet> ls = d.Liste_objets;
@@ -268,6 +294,11 @@ namespace probleme_gestion_dons
                 Stocker_Objet(ls[i], asso);
             }
         }
+        /// <summary>
+        /// Stocke un objet dans l'association
+        /// </summary>
+        /// <param name="o">objet</param>
+        /// <param name="a">association</param>
         public static void Stocker_Objet(Objet o, Association a)
         {
             List<Lieu_Stockage> ls = a.Lieux_stock;
@@ -290,6 +321,10 @@ namespace probleme_gestion_dons
             }
             ls[choix - 1].Ajouter_Objet(o);
         }
+        /// <summary>
+        /// Permet de donner ou de vendre un objet offert à l'association à un bénéficiaire
+        /// </summary>
+        /// <param name="asso"></param>
         public static void Gestion_Transfert(Association asso)
         {
             asso.Lieux_stock.ForEach(x => Console.WriteLine(x));
@@ -390,12 +425,11 @@ namespace probleme_gestion_dons
         }
         #endregion
 
-        #region Fonctions Module Personne
         /// <summary>
-        /// Fonction de lecture automatique des personnes adhérentes dans un fichier .txt
+        /// Lister les dons stockés par entrepôt et par catégorie/description
         /// </summary>
-        /// <param name="fileName">chemin et nom du fichier à lire</param>
-        /// <returns>la liste des personnes adhérentes créée à partir  </returns>
+        /// <param name="assos">association</param>
+        /// <param name="methode">methode de tri selon l'attribut</param>
         public static void Lister_Dons_Volumineux_par_entrepots(Association assos, Comparison<Objet_volumineux> methode)
         {
             List<Objet> liste = new List<Objet>();
@@ -412,7 +446,11 @@ namespace probleme_gestion_dons
             });
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
-
+        /// <summary>
+        /// Lister les dons stockés par entrepôt et par volume
+        /// </summary>
+        /// <param name="assos">association</param>
+        /// <param name="methode">methode de tri selon l'attribut</param>
         public static void Lister_Dons_par_depot_vente(Association assos, Comparison<Objet> methode)
         {
             assos.Lieux_stock.ForEach(delegate (Lieu_Stockage l) {
@@ -423,7 +461,12 @@ namespace probleme_gestion_dons
                 }
             });
         }
-
+        #region Fonctions Module Personne
+        /// <summary>
+        /// Fonction de lecture automatique des personnes adhérentes dans un fichier .txt
+        /// </summary>
+        /// <param name="fileName">chemin et nom du fichier à lire</param>
+        /// <returns>la liste des personnes adhérentes créée à partir  </returns>
         public static List<Personne_adherente> lecture_personnes_adherente(string fileName)
         {
             List<Personne_adherente> liste = new List<Personne_adherente>();
@@ -476,6 +519,10 @@ namespace probleme_gestion_dons
         #endregion
 
         #region Fonctions Menu des Modules
+        /// <summary>
+        /// Module personne
+        /// </summary>
+        /// <param name="asso">association</param>
         static void Module_Personne(Association asso)
         {
             bool fin = false;
@@ -534,6 +581,10 @@ namespace probleme_gestion_dons
                 }
             } while (!fin);
         }
+        /// <summary>
+        /// Module Don
+        /// </summary>
+        /// <param name="asso">association</param>
         static void Module_Don(Association asso)
         {
             bool fin = false;
@@ -580,6 +631,10 @@ namespace probleme_gestion_dons
                 }
             } while (!fin);
         }
+        /// <summary>
+        /// Module Tri
+        /// </summary>
+        /// <param name="asso">association</param>
         static void Module_Tri(Association asso)
         {
 
@@ -664,6 +719,10 @@ namespace probleme_gestion_dons
                 }
             } while (!fin);
         }
+        /// <summary>
+        /// Module Statistiques
+        /// </summary>
+        /// <param name="asso">association</param>
         static void Module_Stats(Association asso)
         {
             bool fin = false;
@@ -703,6 +762,10 @@ namespace probleme_gestion_dons
                 }
             } while (!fin);
         }
+        /// <summary>
+        /// Module bonus
+        /// </summary>
+        /// <param name="asso"></param>
         static void Module_Autre(Association asso)
         {
             bool fin = false;
@@ -750,7 +813,6 @@ namespace probleme_gestion_dons
             } while (!fin);
         }
         #endregion
-
         static void Main(string[] args)
         {
             Association asso = new Association();
