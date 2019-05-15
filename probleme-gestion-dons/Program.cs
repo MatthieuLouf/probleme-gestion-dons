@@ -539,7 +539,7 @@ namespace probleme_gestion_dons
 
                 Console.WriteLine("\n0 : Revenir au menu général");
 
-                int lecture = demanderInt("\nChoisissez votre programme", 0, 6);
+                int lecture = demanderInt("\nChoisissez votre programme", 0, 7);
 
                 switch (lecture)
                 {
