@@ -282,7 +282,7 @@ namespace probleme_gestion_dons
                 do
                 {
                     choix = demanderInt("Dans quel lieu voulez vous le stocker cet objet lourd", 1, ls.Count);
-                } while (ls[choix - 1].Volume_Restant() < ov.Volume);
+                } while (ls[choix - 1].Volume_Restant < ov.Volume);
             }
             else
             {

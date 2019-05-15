@@ -12,6 +12,14 @@ namespace probleme_gestion_dons
         protected int identifiant;
         protected string telephone;
 
+        protected Personne(string nom, int identifiant, string telephone)
+        {
+            this.nom = nom;
+            this.identifiant = identifiant;
+            this.telephone = telephone;
+
+        }
+
         public string Telephone
         {
             get
@@ -19,7 +27,6 @@ namespace probleme_gestion_dons
                 return this.telephone;
             }
         }
-
         public string Nom
         {
             get
@@ -27,25 +34,16 @@ namespace probleme_gestion_dons
                 return this.nom;
             }
         }
-
-        protected Personne(string nom, int identifiant, string telephone)
-        {
-            this.nom = nom;
-            this.identifiant = identifiant;
-            this.telephone = telephone;
-        }
-
-        public override string ToString()
-        {
-            return "Personne n°" + this.identifiant + " Nom :" + this.nom + " Tel : " + this.telephone ;
-        }
-
         public int Id
         {
             get { return this.identifiant; }
             set { this.identifiant = value; }
         }
 
+        public override string ToString()
+        {
+            return "Personne n°" + this.identifiant + " Nom :" + this.nom + " Tel : " + this.telephone ;
+        }
         public int CompareTo(object o)
         {
             Personne p = (Personne)o;

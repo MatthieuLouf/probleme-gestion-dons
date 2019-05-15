@@ -16,21 +16,6 @@ namespace probleme_gestion_dons
         Don don_groupe;
         List<string[]> informations_supplementaires;
 
-        public string Description
-        {
-            get
-            {
-                return description_objet;
-            }
-        }
-
-        public double Prix
-        {
-            get
-            {
-                return this.montant;
-            }
-        }
         public Objet(string type, string description_objet, double montant, List<string[]> info_sup)
         {
             compteur++;
@@ -40,16 +25,22 @@ namespace probleme_gestion_dons
             this.montant = montant;
             this.informations_supplementaires = info_sup;
         }
+        public Objet(string type, string description_objet, double montant) : this(type, description_objet, montant, new List<string[]>()) { }
 
-        public Objet(string type, string description_objet, double montant) : this(type, description_objet, montant, new List<string[]>()) {}
-
-        public override string ToString()
+        public string Description
         {
-            string str = "Objet Id n°" + this.reference_objet + " : " + this.type + " (" + this.description_objet + ") pour le prix de " + this.montant + "euros\n        Informations supplémentaires :";
-            this.informations_supplementaires.ForEach(x => str += "\n        " + x[0] + " : " + x[1]);
-            return str;
+            get
+            {
+                return description_objet;
+            }
         }
-
+        public double Prix
+        {
+            get
+            {
+                return this.montant;
+            }
+        }
         public Don Don_groupe
         {
             get { return this.don_groupe; }
@@ -65,6 +56,12 @@ namespace probleme_gestion_dons
             set { this.reference_objet = value; }
         }
 
+        public override string ToString()
+        {
+            string str = "Objet Id n°" + this.reference_objet + " : " + this.type + " (" + this.description_objet + ") pour le prix de " + this.montant + "euros\n        Informations supplémentaires :";
+            this.informations_supplementaires.ForEach(x => str += "\n        " + x[0] + " : " + x[1]);
+            return str;
+        }
         public int CompareTo(object o)
         {
             Objet ob = (Objet)o;

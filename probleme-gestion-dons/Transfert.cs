@@ -27,12 +27,10 @@ namespace probleme_gestion_dons
         {
             get { return this.prix; }
         }
-
         public Objet Objet_transfert
         {
             get { return this.objet_transfert; }
         }
-
         public DateTime Date
         {
             get { return this.date; }
@@ -42,7 +40,6 @@ namespace probleme_gestion_dons
         {
             return "Vente pour " + prix + " euros, de :\n" + objet_transfert + "\n venant de " + provenance + "\transfere à " + beneficiaire;
         }
-
         public int CompareTo(object o)
         {
             Transfert t = (Transfert)o;

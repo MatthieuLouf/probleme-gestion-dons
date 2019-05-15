@@ -10,17 +10,17 @@ namespace probleme_gestion_dons
     {
         DateTime date_naissance;
 
+        public Personne_beneficiaire(DateTime date_naissance, string prenom, string adresse, string nom, int identifiant, string telephone) : base(prenom, adresse, nom, identifiant, telephone)
+        {
+            this.date_naissance = date_naissance;
+        }
+
         public DateTime DateNaissance
         {
             get
             {
                 return this.date_naissance;
             }
-        }
-
-        public Personne_beneficiaire(DateTime date_naissance, string prenom, string adresse, string nom, int identifiant, string telephone) : base(prenom, adresse, nom, identifiant, telephone)
-        {
-            this.date_naissance = date_naissance;
         }
 
         public override string ToString()

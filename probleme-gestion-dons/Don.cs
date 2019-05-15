@@ -16,6 +16,21 @@ namespace probleme_gestion_dons
         List<Objet> liste_objets;
         Personne_adherente donateur;
 
+        public Don(DateTime date_reception_don, string description_don, string status, List<Objet> liste_objets, Personne_adherente donateur)
+        {
+            compteur++;
+            this.id = compteur;
+            this.date_reception_don = date_reception_don;
+            this.description_don = description_don;
+            this.status = status;
+            this.liste_objets = liste_objets;
+            for (int i = 0; i < liste_objets.Count; i++)
+            {
+                liste_objets[i].Don_groupe = this;
+            }
+            this.donateur = donateur;
+        }
+
         public DateTime Date
         {
             get
@@ -23,7 +38,6 @@ namespace probleme_gestion_dons
                 return this.date_reception_don;
             }
         }
-
         public string Status
         {
             get
@@ -35,7 +49,6 @@ namespace probleme_gestion_dons
                 this.status = value;
             }
         }
-
         public string Nom_Donateur
         {
             get
@@ -43,7 +56,6 @@ namespace probleme_gestion_dons
                 return this.donateur.Nom;
             }
         }
-
         public string Description
         {
             get
@@ -51,33 +63,15 @@ namespace probleme_gestion_dons
                 return this.description_don;
             }
         }
-
-        public Don(DateTime date_reception_don, string description_don, string status, List<Objet> liste_objets, Personne_adherente donateur)
-        {
-            compteur++;
-            this.id = compteur;
-            this.date_reception_don = date_reception_don;
-            this.description_don = description_don;
-            this.status = status;
-            this.liste_objets = liste_objets;
-            for(int i=0;i<liste_objets.Count;i++)
-            {
-                liste_objets[i].Don_groupe = this;
-            }
-            this.donateur = donateur;
-        }
-
         public string Description_don
         {
             get { return this.description_don; }
         }
-
         public int Id
         {
             get { return this.id; }
             set { this.id = value; }
         }
-
         public List<Objet> Liste_objets
         {
             get { return this.liste_objets; }
@@ -92,7 +86,6 @@ namespace probleme_gestion_dons
             }
             return result;
         }
-
         public int CompareTo(object o)
         {
             Don d = (Don)o;
