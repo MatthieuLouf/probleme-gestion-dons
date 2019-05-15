@@ -9,7 +9,13 @@ namespace probleme_gestion_dons
 {
     class Program
     {
-        //Fonctions demande valeurs
+        #region Fonctions Saisie Valeurs
+
+        /// <summary>
+        /// demande de saisie de String et affichage de la demande
+        /// </summary>
+        /// <param name="demande">Phrase demandant le string à saisir</param>
+        /// <returns>le string saisi</returns>
         static string demanderString(string demande="")
         {
             if(demande!="")
@@ -19,6 +25,14 @@ namespace probleme_gestion_dons
 
             return Console.ReadLine();
         }
+
+        /// <summary>
+        /// demande de saisie sécurisée d'un Int, qui réutilise demanderString(...), avec des valeurs min et max optionnelles
+        /// </summary>
+        /// <param name="demande">Phrase demandant le int à saisir</param>
+        /// <param name="min">Valeur minimale à saisir, optionnelle</param>
+        /// <param name="max">Valeur maximale à saisir, optionnelle</param>
+        /// <returns>le int saisi</returns>
         static int demanderInt(string demande="",int min = -1, int max = -1)
         {
             bool err = false;
@@ -49,6 +63,14 @@ namespace probleme_gestion_dons
             } while (err == true || (est_minmax == true && (result < min || result > max)) || (est_min == true && (result < min)));
             return result;
         }
+
+        /// <summary>
+        /// demande de saisie sécurisée d'un double, qui réutilise demanderString(...)
+        /// </summary>
+        /// <param name="demande">Phrase demandant le double à saisir</param>
+        /// <param name="min">Valeur minimale à saisir, optionnelle</param>
+        /// <param name="max">Valeur maximale à saisir, optionnelle</param>
+        /// <returns>le double saisi</returns>
         static double demanderDouble(string demande = "", double min = -1, double max = -1)
         {
             bool err = false;
@@ -79,8 +101,9 @@ namespace probleme_gestion_dons
             } while (err == true || (est_minmax == true && (result < min || result > max)) || (est_min==true && (result<min)) );
             return result;
         }
+        #endregion
 
-        //Fonctions Module Don
+        #region Fonctions Module Don
         static Objet entrerObjet()
         {
             List<string> type_objets_volumineux = new List<string>();
@@ -285,7 +308,6 @@ namespace probleme_gestion_dons
                 {
                     choix2 = demanderInt("\nQuel Objet voulez-vous transférer? - n°", 1);
                 } while (ls_objets.Find(x => x.Id == choix2)==null);
-                
 
                 List<Personne_beneficiaire> ls_benef = asso.Liste_beneficiaire;
                 ls_benef.ForEach(x => Console.WriteLine(x));
@@ -309,20 +331,37 @@ namespace probleme_gestion_dons
 
 
         }
-      
-        //Fonctions Module Tri
+        #endregion
+
+        #region Fonctions Module Tri
+        /// <summary>
+        /// Listing des Objets vendus ou transférés par l'association
+        /// </summary>
+        /// <param name="assos">Association dans laquelle lister les objets transférés</param>
+        /// <param name="methode">Méthode de comparaison pour sort les objets</param>
         public static void Lister_Dons_vendus(Association assos, Comparison<Don> methode)
         {
             List<Don> liste = assos.Archive_association.Dons_archive;
             liste.Sort(methode);
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
+
+        /// <summary>
+        /// Listing des dons refusés par date
+        /// </summary>
+        /// <param name="assos">Association dans laquelle lister les objets transférés</param>
         public static void Lister_Dons_refuse_date(Association assos)
         {
             List<Don> liste = assos.Archive_association.Dons_refuses;
             liste.Sort((a, b) => a.Date.CompareTo(b.Date));
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
+
+        /// <summary>
+        /// Listing des dons en traitement, c'est à dire en attente de validation ou laissés chez le donnateur
+        /// </summary>
+        /// <param name="assos">Association dans laquelle lister les objets transférés</param>
+        /// <param name="methode">Méthode de comparaison pour sort les objets</param>
         public static void Lister_Dons_en_traitement(Association assos, Comparison<Don> methode)
         {
             List<Don> liste = assos.Dons_attente.ToList<Don>();
@@ -330,6 +369,12 @@ namespace probleme_gestion_dons
             liste.Sort(methode);
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
+
+        /// <summary>
+        /// Listing des dons stockés par entrepot
+        /// </summary>
+        /// <param name="assos">Association dans laquelle lister les objets transférés</param>
+        /// <param name="methode">Méthode de comparaison pour sort les objets</param>
         public static void Lister_Dons_par_entrepots(Association assos, Comparison<Objet> methode)
         {
             List<Objet> liste = new List<Objet>();
@@ -340,8 +385,14 @@ namespace probleme_gestion_dons
             
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
+        #endregion
 
-        //Fonctions Module Personne
+        #region Fonctions Module Personne
+        /// <summary>
+        /// Fonction de lecture automatique des personnes adhérentes dans un fichier .txt
+        /// </summary>
+        /// <param name="fileName">chemin et nom du fichier à lire</param>
+        /// <returns>la liste des personnes adhérentes créée à partir  </returns>
         public static List<Personne_adherente> lecture_personnes_adherente(string fileName)
         {
             List<Personne_adherente> liste = new List<Personne_adherente>();
@@ -363,6 +414,12 @@ namespace probleme_gestion_dons
             Console.WriteLine();
             return liste;
         }
+
+        /// <summary>
+        /// Fonction de lecture automatique des personnes bénéficia dans un fichier .txt
+        /// </summary>
+        /// <param name="fileName">chemin et nom du fichier à lire</param>
+        /// <returns></returns>
         public static List<Personne_beneficiaire> lecture_personnes_beneficiaire(string fileName)
         {
             List<Personne_beneficiaire> liste = new List<Personne_beneficiaire>();
@@ -385,11 +442,9 @@ namespace probleme_gestion_dons
             Console.WriteLine();
             return liste;
         }
+        #endregion
 
-        //Fonctions Module Stats
-        //public static void Moyenne_Temps_Avant_Transfert();
-
-        //Fonctions Menu des Modules
+        #region Fonctions Menu des Modules
         static void Module_Personne(Association asso)
         {
             bool fin = false;
@@ -603,6 +658,7 @@ namespace probleme_gestion_dons
                 }
             } while (!fin);
         }
+        #endregion
 
         static void Main(string[] args)
         {
