@@ -9,6 +9,45 @@ namespace probleme_gestion_dons
 {
     class Program
     {
+        //Fonctions lecture fichiers
+        public static List<Personne_adherente> lecture_personnes_adherente(string fileName)
+        {
+            List<Personne_adherente> liste = new List<Personne_adherente>();
+            string[] fileString = File.ReadAllLines(fileName);
+
+            for (int ligne = 0; ligne < fileString.Length - 1; ligne++)
+            {
+                string[] substring = fileString[ligne].Split(';');
+                int identifiant = int.Parse(substring[0]);
+                string nom = substring[1];
+                string adresse = substring[2];
+                string telephone = substring[3];
+                string prenom = substring[4];
+                string fonction = substring[5];
+                liste.Add(new Personne_adherente(fonction, prenom, adresse, nom, identifiant, telephone));
+            }
+            return liste;
+        }
+        public static List<Personne_beneficiaire> lecture_personnes_beneficiaire(string fileName)
+        {
+            List<Personne_beneficiaire> liste = new List<Personne_beneficiaire>();
+            string[] fileString = File.ReadAllLines(fileName);
+
+            for (int ligne = 0; ligne < fileString.Length - 1; ligne++)
+            {
+                string[] substring = fileString[ligne].Split(';');
+                int identifiant = int.Parse(substring[0]);
+                string nom = substring[1];
+                string adresse = substring[2];
+                string telephone = substring[3];
+                string prenom = substring[4];
+                string date_naissance = substring[5];
+                DateTime date = DateTime.Parse(date_naissance);
+                liste.Add(new Personne_beneficiaire(date, prenom, adresse, nom, identifiant, telephone));
+            }
+            return liste;
+        }
+
         //Fonctions demande valeurs
         static string demanderString(string demande="")
         {
@@ -80,6 +119,7 @@ namespace probleme_gestion_dons
             return result;
         }
 
+        //Fonctions Module Don
         static Objet entrerObjet()
         {
             List<string> type_objets_volumineux = new List<string>();
@@ -192,53 +232,12 @@ namespace probleme_gestion_dons
             Don result = new Don(date_reception_don, description_don, status, liste_objets, p);
             return result;
         }
-
-        public static List<Personne_adherente> lecture_personnes_adherente(string fileName)
-        {
-            List<Personne_adherente> liste = new List<Personne_adherente>();
-            string[] fileString = File.ReadAllLines(fileName);
-
-            for (int ligne = 0; ligne < fileString.Length - 1; ligne++)
-            {
-                string[] substring = fileString[ligne].Split(';');
-                int identifiant = int.Parse(substring[0]);
-                string nom = substring[1];
-                string adresse = substring[2];
-                string telephone = substring[3];
-                string prenom = substring[4];
-                string fonction = substring[5];
-                liste.Add(new Personne_adherente(fonction, prenom, adresse, nom, identifiant, telephone));
-            }
-            return liste;
-        }
-
-        public static List<Personne_beneficiaire> lecture_personnes_beneficiaire(string fileName)
-        {
-            List<Personne_beneficiaire> liste = new List<Personne_beneficiaire>();
-            string[] fileString = File.ReadAllLines(fileName);
-
-            for (int ligne = 0; ligne < fileString.Length - 1; ligne++)
-            {
-                string[] substring = fileString[ligne].Split(';');
-                int identifiant = int.Parse(substring[0]);
-                string nom = substring[1];
-                string adresse = substring[2];
-                string telephone = substring[3];
-                string prenom = substring[4];
-                string date_naissance = substring[5];
-                DateTime date = DateTime.Parse(date_naissance);
-                liste.Add(new Personne_beneficiaire(date, prenom, adresse, nom, identifiant, telephone));
-            }
-            return liste;
-        }
-
         public static void Creation_Don(Association asso)
         {
             asso.Liste_adherent.ForEach(x => Console.WriteLine(x));
             Don d = entrerDon(asso);
             asso.AjouterDonAttente(d);
         }
-
         public static void Gestion_Dons_Attente(Association asso)
         {
             if(asso.Dons_attente.Count!=0)
@@ -304,7 +303,6 @@ namespace probleme_gestion_dons
             }
             ls[choix - 1].Ajouter_Objet(o);
         }
-
         public static void Gestion_Transfert(Association asso)
         {
             asso.Lieux_stock.ForEach(x => Console.WriteLine(x));
@@ -325,11 +323,27 @@ namespace probleme_gestion_dons
                 List<Personne_beneficiaire> ls_benef = asso.Liste_beneficiaire;
                 ls_benef.ForEach(x => Console.WriteLine(x));
                 int choix3 = demanderInt("\nÀ quel bénéficiaire? - n°", 1, ls_benef.Count);
+
+                double prix = 0;
+
+                if(stock.Type=="depot_vente")
+                {
+                    prix = demanderDouble("Pour quel prix ?", 0, -1);
+                }
+
+                Transfert trans = new Transfert(prix, ls_objets.Find(x => x.Id == choix2), ls_benef[choix3 - 1]);
+                asso.Transferer_Objet(stock, trans);
+                Console.WriteLine("Objet transféré à " + ls_benef[choix3 - 1].Nom + "!");
+            }
+            else
+            {
+                Console.WriteLine("Lieu de stockage vide!");
             }
 
 
         }
       
+        //Fonctions Module Tri
         public static void Lister_Dons_vendus(Association assos, Comparison<Don> methode)
         {
             List<Don> liste = assos.Archive_association.Dons_archive;
@@ -362,14 +376,13 @@ namespace probleme_gestion_dons
             liste.ForEach(x => Console.WriteLine(x.ToString()));
         }
 
+        //Fonctions Module Personne
 
-        static void Main(string[] args)
+        //Fonctions Module Stats
+
+        //Fonctions Menu des Modules
+        static void Module_Don(Association asso)
         {
-            List<Personne_adherente> liste_adherent = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
-            List<Personne_beneficiaire> liste_beneficiaire = lecture_personnes_beneficiaire("..\\..\\data\\Beneficiaires.txt");
-
-            Association asso = new Association(liste_adherent, liste_beneficiaire);
-           
             bool fin = false;
 
             do
@@ -381,14 +394,9 @@ namespace probleme_gestion_dons
                 Console.WriteLine("3 : Déménager un don du donnateur");
                 Console.WriteLine("4 : Transferer un objet à un bénéficiaire");
 
-                Console.WriteLine("5 : Afficher dons");
-                Console.WriteLine("6 : Liste dons refusés triés par date");
-                Console.WriteLine("7 : Liste dons en traitement par Id et par Nom");
-                Console.WriteLine("8 : Liste dons vendus par mois et par numéro de bénéficiaires");
-                Console.WriteLine("9 : Liste dons stockés par entrepôt et par catégorie/description");
-                Console.WriteLine("10 : Fin du programme");
+                Console.WriteLine("\n0 : Revenir au menu général");
 
-                int lecture = demanderInt("\nChoisissez votre programme", 1, 10);
+                int lecture = demanderInt("\nChoisissez votre programme", 0, 4);
 
                 switch (lecture)
                 {
@@ -408,21 +416,53 @@ namespace probleme_gestion_dons
                         Console.Clear();
                         Gestion_Transfert(asso);
                         break;
-                    case 5:
+                    case 0:
+                        Console.Clear();
+                        fin = true;
+                        break;
+
+                    default:
+                        Console.WriteLine("\nchoix non valide => faites un autre choix....");
+                        break;
+                }
+            } while (!fin);
+        }
+        static void Module_Tri(Association asso)
+        {
+
+            bool fin = false;
+
+            do
+            {
+                fin = false;
+                Console.WriteLine();
+                Console.WriteLine("1 : Afficher dons");
+                Console.WriteLine("2 : Liste dons refusés triés par date");
+                Console.WriteLine("3 : Liste dons en traitement par Id et par Nom");
+                Console.WriteLine("4 : Liste dons vendus par mois et par numéro de bénéficiaires");
+                Console.WriteLine("5 : Liste dons stockés par entrepôt et par catégorie/description");
+
+                Console.WriteLine("\n0 : Revenir au menu général");
+
+                int lecture = demanderInt("\nChoisissez votre programme", 0, 6);
+
+                switch (lecture)
+                {
+                    case 1:
                         Console.Clear();
                         Console.WriteLine("Dons en attente :");
                         asso.Dons_attente.ToList().ForEach(x => Console.WriteLine(x));
                         Console.WriteLine("Dons valides :");
                         asso.Archive_association.Dons_archive.ForEach(x => Console.WriteLine(x));
                         break;
-                    
-                    case 6:
+
+                    case 2:
                         Console.Clear();
                         Console.WriteLine("Liste dons triés par date");
                         Lister_Dons_refuse_date(asso);
                         break;
 
-                    case 7:
+                    case 3:
                         Console.Clear();
                         Console.WriteLine("Liste dons en traitement triés par ID");
                         Lister_Dons_en_traitement(asso, (a, b) => a.Id.CompareTo(b.Id));
@@ -431,7 +471,7 @@ namespace probleme_gestion_dons
                         Lister_Dons_en_traitement(asso, (a, b) => a.Nom_Donateur.CompareTo(b.Nom_Donateur));
                         break;
 
-                    case 8:
+                    case 4:
                         Console.Clear();
                         Console.WriteLine("Liste dons vendus triés par mois");
                         Lister_Dons_vendus(asso, (a, b) => a.Date.CompareTo(b.Date));
@@ -440,13 +480,70 @@ namespace probleme_gestion_dons
                         Lister_Dons_vendus(asso, (a, b) => a.Id.CompareTo(b.Id));
                         break;
 
-                    case 9:
+                    case 5:
                         Console.Clear();
                         Console.WriteLine("Liste dons stockés par entrepots, par catégorie/description");
                         Lister_Dons_vendus(asso, (a, b) => a.Description.CompareTo(b.Description));
                         break;
 
-                    case 10:
+                    case 0:
+                        Console.Clear();
+                        fin = true;
+                        break;
+
+                    default:
+                        Console.WriteLine("\nchoix non valide => faites un autre choix....");
+                        break;
+                }
+            } while (!fin);
+        }
+
+        static void Main(string[] args)
+        {
+            List<Personne_adherente> liste_adherent = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
+            List<Personne_beneficiaire> liste_beneficiaire = lecture_personnes_beneficiaire("..\\..\\data\\Beneficiaires.txt");
+
+            Association asso = new Association(liste_adherent, liste_beneficiaire);
+           
+            bool fin = false;
+
+            do
+            {
+                fin = false;
+                Console.WriteLine();
+                Console.WriteLine("1 : Module Personne");
+                Console.WriteLine("2 : Module Don");
+                Console.WriteLine("3 : Module Tri");
+                Console.WriteLine("4 : Module Stats");
+                Console.WriteLine("5 : Module Autre");
+
+                Console.WriteLine("\n0 : Fin du programme");
+
+                int lecture = demanderInt("\nChoisissez votre programme", 0, 5);
+
+                switch (lecture)
+                {
+                    case 1:
+                        Console.Clear();
+                        Console.WriteLine("Il arrive");
+                        break;
+                    case 2:
+                        Console.Clear();
+                        Module_Don(asso);
+                        break;
+                    case 3:
+                        Console.Clear();
+                        Module_Tri(asso);
+                        break;
+                    case 4:
+                        Console.Clear();
+                        Console.WriteLine("Il arrive");
+                        break;
+                    case 5:
+                        Console.Clear();
+                        Console.WriteLine("Il arrive");
+                        break;
+                    case 0:
                         Console.Clear();
                         Console.WriteLine("fin de programme...");
                         Console.ReadKey();

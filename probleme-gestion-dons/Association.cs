@@ -134,5 +134,11 @@ namespace probleme_gestion_dons
             }
         }
 
+        public void Transferer_Objet(Lieu_Stockage lieu, Transfert trans)
+        {
+            lieu.Retirer_Objet(trans.Objet_transfert, trans.Prix);
+            this.archive_association.Add_objet_transfere(trans);
+        }
+
     }
 }

@@ -45,5 +45,10 @@ namespace probleme_gestion_dons
             don.Status = "refuse";
             this.liste_dons_refuse.Add(don);
         }
+
+        public void Add_objet_transfere(Transfert trans)
+        {
+            this.liste_transferts.Add(trans);
+        }
     }
 }

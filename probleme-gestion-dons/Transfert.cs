@@ -13,12 +13,22 @@ namespace probleme_gestion_dons
         Objet objet_transfert;
         Personne_beneficiaire beneficiaire;
 
-        public Transfert(double prix, DateTime date, Objet objet_transfert)
+        public Transfert(double prix, Objet objet_transfert, Personne_beneficiaire beneficiaire)
         {
             this.prix = prix;
-            this.date = date;
             this.objet_transfert = objet_transfert;
+            this.beneficiaire = beneficiaire;
             this.date = DateTime.Now;
+        }
+
+        public double Prix
+        {
+            get { return this.prix; }
+        }
+
+        public Objet Objet_transfert
+        {
+            get { return this.objet_transfert; }
         }
     }
 }

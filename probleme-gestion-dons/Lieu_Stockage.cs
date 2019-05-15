@@ -52,6 +52,19 @@ namespace probleme_gestion_dons
             }
         }
 
+        public void Retirer_Objet(Objet o, double prix)
+        {
+            if(this.objets_stockes.Contains(o))
+            {
+                this.objets_stockes.Remove(o);
+                this.solde += prix;
+            }
+            else
+            {
+                Console.WriteLine("Objet non present dans le lieu de stockage");
+            }
+        }
+
         public double Volume_Restant()
         {
             double volume_restant = volume;
