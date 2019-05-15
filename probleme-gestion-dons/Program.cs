@@ -393,6 +393,34 @@ namespace probleme_gestion_dons
         /// </summary>
         /// <param name="fileName">chemin et nom du fichier à lire</param>
         /// <returns>la liste des personnes adhérentes créée à partir  </returns>
+        public static void Lister_Dons_Volumineux_par_entrepots(Association assos, Comparison<Objet_volumineux> methode)
+        {
+            List<Objet> liste = new List<Objet>();
+            assos.Lieux_stock.ForEach(delegate (Lieu_Stockage l) {
+                List<Objet_volumineux> liste_obj_volumineux = new List<Objet_volumineux>();
+                l.Liste_objets_stockes.ForEach(delegate (Objet obj)
+                {
+                    if (obj.GetType() == typeof(Objet_volumineux)){
+                        liste_obj_volumineux.Add((Objet_volumineux)obj);
+                    }
+                });
+                liste_obj_volumineux.Sort(methode);
+            liste_obj_volumineux.ForEach(x => Console.WriteLine(x.ToString()));
+            });
+            liste.ForEach(x => Console.WriteLine(x.ToString()));
+        }
+
+        public static void Lister_Dons_par_depot_vente(Association assos, Comparison<Objet> methode)
+        {
+            assos.Lieux_stock.ForEach(delegate (Lieu_Stockage l) {
+                if (l.Type == "depot_vente")
+                {
+                    l.Liste_objets_stockes.Sort(methode);
+                    l.Liste_objets_stockes.ForEach(x => Console.WriteLine(x.ToString()));
+                }
+            });
+        }
+        //Fonctions Module Personne
         public static List<Personne_adherente> lecture_personnes_adherente(string fileName)
         {
             List<Personne_adherente> liste = new List<Personne_adherente>();
@@ -563,6 +591,8 @@ namespace probleme_gestion_dons
                 Console.WriteLine("3 : Liste dons en traitement par Id et par Nom");
                 Console.WriteLine("4 : Liste dons vendus par mois et par numéro de bénéficiaires");
                 Console.WriteLine("5 : Liste dons stockés par entrepôt et par catégorie/description");
+                Console.WriteLine("6 : Liste dons stockés par entrepôt et par volume");
+                Console.WriteLine("7 : Liste dons par dépôt-vente et par prix");
 
                 Console.WriteLine("\n0 : Revenir au menu général");
 
@@ -605,8 +635,20 @@ namespace probleme_gestion_dons
                     case 5:
                         Console.Clear();
                         Console.WriteLine("Liste dons stockés par entrepots, par catégorie/description");
-                        Lister_Dons_vendus(asso, (a, b) => a.Description.CompareTo(b.Description));
+                        Lister_Dons_par_entrepots(asso, (a, b) => a.Description.CompareTo(b.Description));
                         break;
+                    
+                    case 6:
+                        Console.Clear();
+                        Console.WriteLine("Lister les dons volumineux stockés par entrepôt et par volume");
+                        Lister_Dons_Volumineux_par_entrepots(asso, (a, b) => a.Volume.CompareTo(b.Volume));
+                        break;
+                    case 7:
+                        Console.Clear();
+                        Console.WriteLine("Liste dons par dépôt-vente et par prix");
+                        Lister_Dons_Volumineux_par_entrepots(asso, (a, b) => a.Prix.CompareTo(b.Prix));
+                        break;
+
 
                     case 0:
                         Console.Clear();
@@ -645,7 +687,53 @@ namespace probleme_gestion_dons
                         break;
                     case 3:
                         Console.Clear();
-                        Console.WriteLine("La moyenne d'âge des bénéficiaires est : "+asso.AvgAge_Beneficiaires.Days/365);
+                        Console.WriteLine("La moyenne d'âge des bénéficiaires est : "+asso.AvgAge_Beneficiaires.Days/365 + "ans.");
+                        break;
+                    case 0:
+                        Console.Clear();
+                        fin = true;
+                        break;
+
+                    default:
+                        Console.WriteLine("\nchoix non valide => faites un autre choix....");
+                        break;
+                }
+            } while (!fin);
+        }
+        static void Module_Autre(Association asso)
+        {
+            bool fin = false;
+            do
+            {
+                fin = false;
+                Console.WriteLine();
+                Console.WriteLine("1 : Initialiser les objets");
+                Console.WriteLine("2 : A venir");
+                Console.WriteLine("3 : A venir");
+
+                Console.WriteLine("\n0 : Revenir au menu général");
+                int lecture = demanderInt("\nChoisissez votre programme", 0, 1);
+
+                switch (lecture)
+                {
+                    case 1:
+                        Console.Clear();
+                        //Vérification si la liste des utilisateurs est déjà remplie
+                        if (asso.Liste_adherent.Count < 1 || asso.Liste_beneficiaire.Count < 1)
+                        {
+                            List<Personne_adherente> liste_adherent = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
+                            List<Personne_beneficiaire> liste_beneficiaire = lecture_personnes_beneficiaire("..\\..\\data\\Beneficiaires.txt");
+                            asso.Set_Utilisateurs(liste_adherent, liste_beneficiaire);
+                            Console.WriteLine("Fichiers lus!");
+                        }
+                        asso.Init();
+                        break;
+                    case 2:
+                        Console.Clear();
+                        break;
+                    case 3:
+                        Console.Clear();
+                        Console.WriteLine("La moyenne d'âge des bénéficiaires est : " + asso.AvgAge_Beneficiaires.Days / 365);
                         break;
                     case 0:
                         Console.Clear();
@@ -700,7 +788,7 @@ namespace probleme_gestion_dons
                         break;
                     case 5:
                         Console.Clear();
-                        Console.WriteLine("Il arrive");
+                        Module_Autre(asso);
                         break;
                     case 0:
                         Console.Clear();
