@@ -306,9 +306,15 @@ namespace probleme_gestion_dons
                     choix2 = demanderInt("\nQuel Objet voulez-vous transférer? - n°", 1);
                 } while (ls_objets.Find(x => x.Id == choix2)==null);
 
-                List<Personne_beneficiaire> ls_benef = asso.Liste_beneficiaire;
-                ls_benef.ForEach(x => Console.WriteLine(x));
-                int choix3 = demanderInt("\nÀ quel bénéficiaire? - n°", 1, ls_benef.Count);
+
+                asso.Liste_beneficiaire.ForEach(x => Console.WriteLine(x));
+                string nom_donateur;
+                Personne_beneficiaire p = null;
+                do
+                {
+                    nom_donateur = demanderString("Entrer le nom de la personne adhérente (donateur)");
+                    p = asso.findByNom_Beneficiaire(nom_donateur);
+                } while (p == null);
 
                 double prix = 0;
 
@@ -317,9 +323,9 @@ namespace probleme_gestion_dons
                     prix = demanderDouble("Pour quel prix ?", 0, -1);
                 }
 
-                Transfert trans = new Transfert(prix, ls_objets.Find(x => x.Id == choix2), ls_benef[choix3 - 1],stock);
+                Transfert trans = new Transfert(prix, ls_objets.Find(x => x.Id == choix2), p,stock);
                 asso.Transferer_Objet(stock, trans);
-                Console.WriteLine("Objet transféré à " + ls_benef[choix3 - 1].Nom + "!");
+                Console.WriteLine("Objet transféré à " + p.Nom + "!");
             }
             else
             {
@@ -643,7 +649,7 @@ namespace probleme_gestion_dons
                     case 7:
                         Console.Clear();
                         Console.WriteLine("Liste dons par dépôt-vente et par prix");
-                        Lister_Dons_Volumineux_par_entrepots(asso, (a, b) => a.Prix.CompareTo(b.Prix));
+                        Lister_Dons_par_depot_vente(asso, (a, b) => a.Prix.CompareTo(b.Prix));
                         break;
 
 
