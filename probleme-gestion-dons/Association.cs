@@ -24,10 +24,10 @@ namespace probleme_gestion_dons
             }
         }
 
-        public Association(List<Personne_adherente> liste_adherent, List<Personne_beneficiaire> liste_beneficiaire)
+        public Association()
         {
-            this.liste_adherent = liste_adherent;
-            this.liste_beneficiaire = liste_beneficiaire;
+            this.liste_adherent = new List<Personne_adherente>();
+            this.liste_beneficiaire = new List<Personne_beneficiaire>();
             this.dons_attente = new Queue<Don>();
             this.dons_donnateur = new Queue<Don>();
             //this.dons_valide = new List<Don>();
@@ -76,14 +76,15 @@ namespace probleme_gestion_dons
         {
             get { return this.dons_donnateur; }
         }
-        /*
-        public List<Don> Dons_valide
-        {
-            get { return this.dons_valide; }
-        }*/
         public List<Lieu_Stockage> Lieux_stock
         {
             get { return this.lieux_stock; }
+        }
+
+        public void Set_Utilisateurs(List<Personne_adherente> liste_adherent, List<Personne_beneficiaire> liste_beneficiaire)
+        {
+            this.liste_adherent = liste_adherent;
+            this.liste_beneficiaire = liste_beneficiaire;
         }
 
         //-----Autres-----//

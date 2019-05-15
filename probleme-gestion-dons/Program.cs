@@ -9,44 +9,6 @@ namespace probleme_gestion_dons
 {
     class Program
     {
-        //Fonctions lecture fichiers
-        public static List<Personne_adherente> lecture_personnes_adherente(string fileName)
-        {
-            List<Personne_adherente> liste = new List<Personne_adherente>();
-            string[] fileString = File.ReadAllLines(fileName);
-
-            for (int ligne = 0; ligne < fileString.Length - 1; ligne++)
-            {
-                string[] substring = fileString[ligne].Split(';');
-                int identifiant = int.Parse(substring[0]);
-                string nom = substring[1];
-                string adresse = substring[2];
-                string telephone = substring[3];
-                string prenom = substring[4];
-                string fonction = substring[5];
-                liste.Add(new Personne_adherente(fonction, prenom, adresse, nom, identifiant, telephone));
-            }
-            return liste;
-        }
-        public static List<Personne_beneficiaire> lecture_personnes_beneficiaire(string fileName)
-        {
-            List<Personne_beneficiaire> liste = new List<Personne_beneficiaire>();
-            string[] fileString = File.ReadAllLines(fileName);
-
-            for (int ligne = 0; ligne < fileString.Length - 1; ligne++)
-            {
-                string[] substring = fileString[ligne].Split(';');
-                int identifiant = int.Parse(substring[0]);
-                string nom = substring[1];
-                string adresse = substring[2];
-                string telephone = substring[3];
-                string prenom = substring[4];
-                string date_naissance = substring[5];
-                DateTime date = DateTime.Parse(date_naissance);
-                liste.Add(new Personne_beneficiaire(date, prenom, adresse, nom, identifiant, telephone));
-            }
-            return liste;
-        }
 
         //Fonctions demande valeurs
         static string demanderString(string demande="")
@@ -377,10 +339,111 @@ namespace probleme_gestion_dons
         }
 
         //Fonctions Module Personne
+        public static List<Personne_adherente> lecture_personnes_adherente(string fileName)
+        {
+            List<Personne_adherente> liste = new List<Personne_adherente>();
+            string[] fileString = File.ReadAllLines(fileName);
+
+            for (int ligne = 0; ligne < fileString.Length - 1; ligne++)
+            {
+                string[] substring = fileString[ligne].Split(';');
+                int identifiant = int.Parse(substring[0]);
+                string nom = substring[1];
+                string adresse = substring[2];
+                string telephone = substring[3];
+                string prenom = substring[4];
+                string fonction = substring[5];
+                liste.Add(new Personne_adherente(fonction, prenom, adresse, nom, identifiant, telephone));
+            }
+            Console.WriteLine("Adhérents :");
+            liste.ForEach(x => Console.WriteLine(x));
+            Console.WriteLine();
+            return liste;
+        }
+        public static List<Personne_beneficiaire> lecture_personnes_beneficiaire(string fileName)
+        {
+            List<Personne_beneficiaire> liste = new List<Personne_beneficiaire>();
+            string[] fileString = File.ReadAllLines(fileName);
+
+            for (int ligne = 0; ligne < fileString.Length - 1; ligne++)
+            {
+                string[] substring = fileString[ligne].Split(';');
+                int identifiant = int.Parse(substring[0]);
+                string nom = substring[1];
+                string adresse = substring[2];
+                string telephone = substring[3];
+                string prenom = substring[4];
+                string date_naissance = substring[5];
+                DateTime date = DateTime.Parse(date_naissance);
+                liste.Add(new Personne_beneficiaire(date, prenom, adresse, nom, identifiant, telephone));
+            }
+            Console.WriteLine("Bénéficiaires :");
+            liste.ForEach(x => Console.WriteLine(x));
+            Console.WriteLine();
+            return liste;
+        }
 
         //Fonctions Module Stats
 
         //Fonctions Menu des Modules
+        static void Module_Personne(Association asso)
+        {
+            bool fin = false;
+
+            do
+            {
+                fin = false;
+                Console.WriteLine();
+                Console.WriteLine("1 : Lire les fichiers utilisateurs");
+                Console.WriteLine("2 : Recherche par téléphone sur les bénéficiaires");
+                Console.WriteLine("3 : Recherche par nom sur les bénéficiaires");
+                Console.WriteLine("4 : Recherche par téléphone sur les adhérents");
+                Console.WriteLine("5 : Recherche par nom sur les adhérents");
+
+                Console.WriteLine("\n0 : Revenir au menu général");
+
+                int lecture = demanderInt("\nChoisissez votre programme", 0, 5);
+                string recherche = "";
+                switch (lecture)
+                {
+                    case 1:
+                        Console.Clear();
+                        List<Personne_adherente> liste_adherent = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
+                        List<Personne_beneficiaire> liste_beneficiaire = lecture_personnes_beneficiaire("..\\..\\data\\Beneficiaires.txt");
+                        asso.Set_Utilisateurs(liste_adherent, liste_beneficiaire);
+                        Console.WriteLine("Fichiers lus!");
+                        break;
+                    case 2:
+                        Console.Clear();
+                        recherche = demanderString("Quel numéro de téléphone de bénéficiaire?");
+                        Console.WriteLine(asso.findByPhone_Beneficiaire(recherche));
+                        break;
+                    case 3:
+                        Console.Clear();
+                        recherche = demanderString("Quel nom de bénéficiaire?");
+                        Console.WriteLine(asso.findByNom_Beneficiaire(recherche));
+                        break;
+                    case 4:
+                        Console.Clear();
+                        recherche = demanderString("Quel numéro de téléphone d'adhérent?");
+                        Console.WriteLine(asso.findByPhone_Adherent(recherche));
+                        break;
+                    case 5:
+                        Console.Clear();
+                        recherche = demanderString("Quel nom d'adhérent?");
+                        Console.WriteLine(asso.findByNom_Adherent(recherche));
+                        break;
+                    case 0:
+                        Console.Clear();
+                        fin = true;
+                        break;
+
+                    default:
+                        Console.WriteLine("\nchoix non valide => faites un autre choix....");
+                        break;
+                }
+            } while (!fin);
+        }
         static void Module_Don(Association asso)
         {
             bool fin = false;
@@ -500,10 +563,7 @@ namespace probleme_gestion_dons
 
         static void Main(string[] args)
         {
-            List<Personne_adherente> liste_adherent = lecture_personnes_adherente("..\\..\\data\\Adherents.txt");
-            List<Personne_beneficiaire> liste_beneficiaire = lecture_personnes_beneficiaire("..\\..\\data\\Beneficiaires.txt");
-
-            Association asso = new Association(liste_adherent, liste_beneficiaire);
+            Association asso = new Association();
            
             bool fin = false;
 
@@ -525,7 +585,7 @@ namespace probleme_gestion_dons
                 {
                     case 1:
                         Console.Clear();
-                        Console.WriteLine("Il arrive");
+                        Module_Personne(asso);
                         break;
                     case 2:
                         Console.Clear();
